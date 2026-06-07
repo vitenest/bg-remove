@@ -50,7 +50,7 @@ export async function processVideo(file, onProgress) {
           const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
           const config = {
-            publicPath: '/models/',
+            publicPath: typeof window !== 'undefined' ? window.location.origin + '/models/' : '/models/',
             model: 'isnet_fp16',
             debug: false,
             output: {
