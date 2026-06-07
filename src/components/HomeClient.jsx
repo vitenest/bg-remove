@@ -75,6 +75,8 @@ function HomeClient() {
     try {
       if (isImage) {
         const config = {
+          publicPath: '/models/',
+          model: 'small',
           debug: false,
           output: { format: 'image/png', quality: 1.0 }
         };

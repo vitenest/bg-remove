@@ -50,6 +50,8 @@ export async function processVideo(file, onProgress) {
           const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
           const config = {
+            publicPath: '/models/',
+            model: 'small',
             debug: false,
             output: {
               format: 'image/png',
