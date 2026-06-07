@@ -1,46 +1,93 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { removeBackground } from '@imgly/background-removal';
-import { Download, RefreshCcw, AlertCircle, Plus } from 'lucide-react';
+import { Download, RefreshCcw, AlertCircle, Plus, Film, Image as ImageIcon } from 'lucide-react';
+import { processVideo } from '../utils/videoProcessor';
+import { canProcess, getWaitTimeMs, recordUsage, formatWaitTime } from '../utils/usageTracker';
+import { useParams } from 'react-router-dom';
+import { seoContent } from '../utils/seoContent';
+
 
 function Home() {
-  const [status, setStatus] = useState('idle'); // idle, processing, success, error
-  const [originalImage, setOriginalImage] = useState(null);
-  const [processedImage, setProcessedImage] = useState(null);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isDragging, setIsDragging] = useState(false);
+  const { toolName } = useParams();
+  const currentContent = seoContent[toolName] || seoContent.default;
+
+  useEffect(() => {
+    document.title = currentContent.metaTitle;
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.name = 'description';
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.content = currentContent.metaDescription;
+  }, [currentContent]);
   
-  // New State for tabs
-  const [activeTab, setActiveTab] = useState('Individuals');
+  const [status, setStatus] = useState('idle'); // idle, processing, success, error, limit_reached
+  const [mediaType, setMediaType] = useState(null); // 'image' or 'video'
+  const [originalMedia, setOriginalMedia] = useState(null);
+  const [processedMedia, setProcessedMedia] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [limitMessage, setLimitMessage] = useState('');
+  const [isDragging, setIsDragging] = useState(false);
+  const [progress, setProgress] = useState(0);
+  
+  const [activeTab, setActiveTab] = useState(currentContent.tabs[0].name);
+
+  useEffect(() => {
+    if (currentContent.tabs && currentContent.tabs.length > 0) {
+      setActiveTab(currentContent.tabs[0].name);
+    }
+  }, [toolName, currentContent]);
   
   const fileInputRef = useRef(null);
 
   const handleFileSelect = async (file) => {
     if (!file) return;
-    if (!file.type.startsWith('image/')) {
-      setErrorMessage('Please upload a valid image file.');
+    
+    const isVideo = file.type.startsWith('video/');
+    const isImage = file.type.startsWith('image/');
+
+    if (!isVideo && !isImage) {
+      setErrorMessage('Please upload a valid image or video file.');
       setStatus('error');
       return;
     }
 
+    const type = isVideo ? 'video' : 'image';
+    if (!canProcess(type)) {
+      const waitMs = getWaitTimeMs(type);
+      setLimitMessage(`You have reached the limit for ${type}s. Please come back after ${formatWaitTime(waitMs)}.`);
+      setStatus('limit_reached');
+      return;
+    }
+
+    setMediaType(type);
     const objectUrl = URL.createObjectURL(file);
-    setOriginalImage(objectUrl);
-    setProcessedImage(null);
+    setOriginalMedia(objectUrl);
+    setProcessedMedia(null);
     setStatus('processing');
     setErrorMessage('');
+    setLimitMessage('');
+    setProgress(0);
 
     try {
-      const config = {
-        publicPath: window.location.origin + '/models/',
-        debug: false,
-        output: {
-          format: 'image/png',
-          quality: 1.0
-        }
-      };
-      const blob = await removeBackground(file, config);
-      const processedUrl = URL.createObjectURL(blob);
-      setProcessedImage(processedUrl);
-      setStatus('success');
+      if (isImage) {
+        const config = {
+          publicPath: window.location.origin + '/models/',
+          debug: false,
+          output: { format: 'image/png', quality: 1.0 }
+        };
+        const blob = await removeBackground(file, config);
+        const processedUrl = URL.createObjectURL(blob);
+        setProcessedMedia(processedUrl);
+        recordUsage('image');
+        setStatus('success');
+      } else if (isVideo) {
+        const processedUrl = await processVideo(file, (p) => setProgress(p));
+        setProcessedMedia(processedUrl);
+        recordUsage('video');
+        setStatus('success');
+      }
     } catch (error) {
       console.error("Background removal failed:", error);
       setErrorMessage(error.message || 'Failed to remove background. Please try again.');
@@ -67,16 +114,19 @@ function Home() {
 
   const reset = () => {
     setStatus('idle');
-    setOriginalImage(null);
-    setProcessedImage(null);
+    setOriginalMedia(null);
+    setProcessedMedia(null);
     setErrorMessage('');
+    setLimitMessage('');
+    setProgress(0);
+    setMediaType(null);
   };
 
   const handleDownload = () => {
-    if (!processedImage) return;
+    if (!processedMedia) return;
     const a = document.createElement('a');
-    a.href = processedImage;
-    a.download = 'magic_remove_result.png';
+    a.href = processedMedia;
+    a.download = mediaType === 'video' ? 'magic_remove_result.mp4' : 'magic_remove_result.png';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -86,21 +136,28 @@ function Home() {
 
   return (
     <>
-
       <div className="main-content">
         <section className="hero">
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
-            <span style={{ border: '1px solid #3f3f46', borderRadius: '999px', padding: '0.2rem 0.8rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-               ✨ Now supports video here
+          <div className="badge-container">
+            <span className="badge glow-border">
+               ✨ Now supports Video Background Removal!
             </span>
           </div>
 
-          <h1>Remove Background From Images For <span className="gradient-text">Free</span></h1>
-          <p className="mb-8">Experience accurate background removal, running entirely in your browser!</p>
+          <h1 className="hero-title">
+            {currentContent.heroTitle.includes('for free') ? (
+              <>
+                {currentContent.heroTitle.split('for free')[0]}
+                <span className="gradient-text">for free</span>
+                {currentContent.heroTitle.split('for free')[1]}
+              </>
+            ) : currentContent.heroTitle}
+          </h1>
+          <p className="hero-subtitle">{currentContent.heroSubtitle}</p>
           
           {status === 'idle' || status === 'error' ? (
             <div 
-              className={`dropzone-container ${isDragging ? 'drag-active' : ''}`}
+              className={`dropzone-container glass-panel ${isDragging ? 'drag-active' : ''}`}
               onDragOver={onDragOver}
               onDragLeave={onDragLeave}
               onDrop={onDrop}
@@ -110,7 +167,7 @@ function Home() {
                 type="file" 
                 ref={fileInputRef} 
                 className="file-input-hidden" 
-                accept="image/*"
+                accept="image/*,video/*"
                 onChange={(e) => {
                   if (e.target.files && e.target.files.length > 0) {
                     handleFileSelect(e.target.files[0]);
@@ -120,125 +177,184 @@ function Home() {
               <div className="dropzone-content">
                 {status === 'error' ? (
                   <>
-                    <AlertCircle size={48} color="#ef4444" />
-                    <div className="dropzone-text" style={{ color: '#ef4444' }}>Error: {errorMessage}</div>
-                    <div className="dropzone-subtext">Click or drag another image to try again</div>
+                    <AlertCircle size={56} color="#ef4444" className="error-icon" />
+                    <div className="dropzone-text error-text">Error: {errorMessage}</div>
+                    <div className="dropzone-subtext">Click or drag another file to try again</div>
                   </>
                 ) : (
                   <>
+                    <div className="icons-row">
+                      <ImageIcon size={40} className="dropzone-icon" />
+                      <Film size={40} className="dropzone-icon" />
+                    </div>
                     <button className="upload-btn" onClick={(e) => {
                       e.stopPropagation();
                       fileInputRef.current?.click();
                     }}>
-                      <div style={{ background: 'white', color: '#8a2387', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justify: 'center' }}>
-                        <Plus size={16} style={{ margin: 'auto' }} />
+                      <div className="btn-icon-wrapper">
+                        <Plus size={16} />
                       </div>
-                      Upload Image
+                      Upload File
                     </button>
-                    <div className="dropzone-text">Drop an image or paste <span className="dropzone-link">URL</span> (Image or Video)</div>
-                    <div style={{ fontSize: '0.8rem', color: '#71717a', textDecoration: 'underline', marginTop: '0.5rem' }}>View Limits and Supported Formats</div>
-                    <div className="dropzone-subtext">By uploading a file or URL you agree to our <strong>Terms of Use</strong> and <strong>Privacy Policy</strong>.</div>
+                    <div className="dropzone-text font-bold">Drop an image or video to magically remove the background.</div>
+                    <div className="dropzone-subtext mt-2">Max Video Duration: 10s. Limits: 25 imgs / 15 mins, 3 vids / 1 hr.</div>
                   </>
                 )}
               </div>
             </div>
           ) : null}
 
+          {status === 'limit_reached' && (
+            <div className="processing-container glass-panel">
+              <AlertCircle size={56} color="#f59e0b" className="mb-4" />
+              <div className="dropzone-text processing-title" style={{ color: '#f59e0b' }}>Limit Reached</div>
+              <p className="text-gray text-center processing-subtitle mt-2">{limitMessage}</p>
+              <button className="btn-secondary mt-4" onClick={reset}>
+                <RefreshCcw size={18} />
+                Try Another File
+              </button>
+            </div>
+          )}
+
           {status === 'processing' && (
-            <div className="processing-container">
+            <div className="processing-container glass-panel">
               <div className="spinner"></div>
-              <div className="dropzone-text" style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>Removing Background...</div>
-              <p className="text-gray text-center" style={{ fontSize: '0.9rem' }}>Everything processes completely on your device.</p>
+              <div className="dropzone-text processing-title">
+                {mediaType === 'video' ? `Processing Video... ${progress}%` : 'Removing Background...'}
+              </div>
+              {mediaType === 'video' && (
+                <div className="progress-bar-bg">
+                  <div className="progress-bar-fill" style={{ width: `${progress}%` }}></div>
+                </div>
+              )}
+              <p className="text-gray text-center processing-subtitle">Everything processes completely on your device.</p>
             </div>
           )}
 
           {status === 'success' && (
-            <div className="result-container">
+            <div className="result-container glass-panel">
               <div className="image-comparison">
                 <div className="image-card">
                   <div className="image-card-title text-gray mb-2">Original</div>
                   <div className="image-wrapper">
-                    <img src={originalImage} alt="Original" />
+                    {mediaType === 'video' ? (
+                      <video src={originalMedia} autoPlay loop muted playsInline />
+                    ) : (
+                      <img src={originalMedia} alt="Original" />
+                    )}
                   </div>
                 </div>
                 <div className="image-card">
                   <div className="image-card-title gradient-text mb-2">Background Removed</div>
                   <div className="image-wrapper checkerboard">
-                    <img src={processedImage} alt="Processed" />
+                    {mediaType === 'video' ? (
+                      <video src={processedMedia} autoPlay loop muted playsInline />
+                    ) : (
+                      <img src={processedMedia} alt="Processed" />
+                    )}
                   </div>
                 </div>
               </div>
 
-              <div className="actions" style={{ justifyContent: 'center' }}>
+              <div className="actions">
                 <button className="btn-secondary" onClick={reset}>
-                  <RefreshCcw size={16} />
-                  Upload Another Image
+                  <RefreshCcw size={18} />
+                  Try Another
                 </button>
-                <button className="btn-primary" onClick={handleDownload} style={{ padding: '0.75rem 2rem' }}>
-                  <Download size={16} />
-                  Download Image
+                <button className="btn-primary glow-effect" onClick={handleDownload}>
+                  <Download size={18} />
+                  Download Result
                 </button>
               </div>
             </div>
           )}
         </section>
         
-        {/* Section 1: Professional Results for Everyone */}
+        {/* Section 1: Dynamic Features */}
         <section className="feature-section text-center">
-          <h2>Professional Results for Everyone</h2>
-          <p className="subtitle">Get stunning, pixel-perfect image transformations regardless of your use case!</p>
+          <h2>{currentContent.section1Title}</h2>
+          <p className="subtitle">{currentContent.section1Text}</p>
           
           <div className="tabs-container">
-            {tabs.map(tab => (
+            {currentContent.tabs.map(tab => (
               <button 
-                key={tab} 
-                className={`tab-btn ${activeTab === tab ? 'active' : ''}`}
-                onClick={() => setActiveTab(tab)}
+                key={tab.name} 
+                className={`tab-btn ${activeTab === tab.name ? 'active' : ''}`}
+                onClick={() => setActiveTab(tab.name)}
               >
-                {tab}
+                {tab.name}
               </button>
             ))}
           </div>
           
           <div className="tab-content">
-            <div className="placeholder-image-container">
-              {/* Using a placeholder image for demonstration */}
-              <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80" alt="Person" className="tab-image" />
+            <div className="placeholder-image-container glass-panel p-4">
+              <img 
+                src={currentContent.tabs.find(t => t.name === activeTab)?.image || currentContent.tabs[0].image} 
+                alt={activeTab} 
+                className="tab-image rounded-lg" 
+              />
             </div>
           </div>
         </section>
 
-        {/* Section 2: 100% Private & Secure */}
+        {/* Section 2: Dynamic Privacy/Features */}
         <section className="feature-section split-section">
           <div className="split-image-container">
              <div className="mock-stacked-images">
-                <img src="https://images.unsplash.com/photo-1614064641913-6b71f301d222?auto=format&fit=crop&w=400&q=80" alt="Privacy Shield" className="mock-img-front" />
+                <img src={currentContent.splitImage} alt="Privacy Shield" className="mock-img-front" />
                 <div className="mock-shape-circle"></div>
              </div>
           </div>
           <div className="split-text-container">
-            <h2>100% Private & Secure</h2>
-            <p className="subtitle" style={{textAlign: 'left'}}>Your images never leave your device.</p>
+            <h2>{currentContent.section2Title}</h2>
+            <p className="subtitle" style={{textAlign: 'left'}}>{currentContent.section2Subtitle}</p>
             
             <div className="feature-box">
-              <h3>Zero Server Uploads</h3>
-              <p>Unlike other tools that send your sensitive data to the cloud, our advanced AI runs entirely inside your browser. This guarantees absolute privacy for your personal photos and business assets.</p>
+              <h3>{currentContent.section2FeatureTitle}</h3>
+              <p>{currentContent.section2FeatureText}</p>
             </div>
           </div>
         </section>
 
-        {/* Section 3: Lightning Fast Performance */}
-        <section className="feature-section split-section reverse">
-          <div className="split-text-container">
-            <h2>Lightning Fast Performance</h2>
-            <p>Experience instant background removal powered by on-device hardware acceleration. No waiting in server queues, no internet latency—just immediate results the moment you drop an image.</p>
-            <a href="#" className="link-pink">Try it now</a>
+        {/* Section 3: How it Works */}
+        <section className="feature-section text-center how-it-works-section">
+          <h2>How It Works</h2>
+          <p className="subtitle">Three simple steps to perfect transparent backgrounds.</p>
+          <div className="steps-grid">
+             <div className="step-card glass-panel">
+               <div className="step-number">1</div>
+               <h3>Upload</h3>
+               <p>Drag & drop your image or video directly into your browser.</p>
+             </div>
+             <div className="step-card glass-panel">
+               <div className="step-number">2</div>
+               <h3>AI Magic</h3>
+               <p>Our completely local AI isolates your subject instantly with zero server uploads.</p>
+             </div>
+             <div className="step-card glass-panel">
+               <div className="step-number">3</div>
+               <h3>Download</h3>
+               <p>Save your high-resolution, pixel-perfect cutout for free.</p>
+             </div>
           </div>
-          <div className="split-image-container flex-end">
-            <div className="mock-api-images">
-               <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=500&q=80" alt="Fast Performance" className="mock-img-sofa-small" />
-               <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=600&q=80" alt="Fast Processing" className="mock-img-sofa-large" />
-               <div className="mock-shape-circle-pink"></div>
+        </section>
+
+        {/* Section 4: FAQ */}
+        <section className="feature-section faq-section">
+          <h2 className="text-center">Frequently Asked Questions</h2>
+          <div className="faq-container">
+            <div className="faq-item glass-panel">
+              <h4>Is it really 100% free?</h4>
+              <p>Yes! Because our advanced AI runs entirely in your browser, we bypass expensive cloud compute costs. This allows us to offer professional background removal completely free of charge.</p>
+            </div>
+            <div className="faq-item glass-panel">
+              <h4>Are my photos kept private?</h4>
+              <p>Absolutely. Your files never leave your device. All image and video processing happens locally within your web browser, ensuring maximum privacy and security for your sensitive assets.</p>
+            </div>
+            <div className="faq-item glass-panel">
+              <h4>Is there a file size limit?</h4>
+              <p>Since processing happens locally, the only limit is your device's memory. Most modern laptops and phones can handle high-resolution photos and short 10-second videos with ease.</p>
             </div>
           </div>
         </section>

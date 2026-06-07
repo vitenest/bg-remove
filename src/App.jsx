@@ -11,6 +11,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/tools/:toolName" element={<Home />} />
         <Route path="/features" element={<Features />} />
       </Routes>
       <Footer />

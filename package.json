@@ -13,6 +13,7 @@
     "@imgly/background-removal": "^1.7.0",
     "@imgly/background-removal-data": "^1.4.5",
     "lucide-react": "^1.17.0",
+    "mp4-muxer": "^5.2.2",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-router-dom": "^7.17.0"
