@@ -51,7 +51,7 @@ export async function processVideo(file, onProgress) {
 
           const config = {
             publicPath: '/models/',
-            model: 'small',
+            model: 'isnet_fp16',
             debug: false,
             output: {
               format: 'image/png',
