@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from 'react';
-import { removeBackground } from '@imgly/background-removal';
+import { removeBackground, preload } from '@imgly/background-removal';
 import { Download, RefreshCcw, AlertCircle, Plus, Film, Image as ImageIcon } from 'lucide-react';
 import { processVideo } from '../utils/videoProcessor';
 import { canProcess, getWaitTimeMs, recordUsage, formatWaitTime } from '../utils/usageTracker';
@@ -12,6 +12,24 @@ function HomeClient() {
   const params = useParams();
   const toolName = params?.toolName;
   const currentContent = seoContent[toolName] || seoContent.default;
+
+  useEffect(() => {
+    // Preload the AI models in the background so they are ready instantly when the user drops a file
+    const preloadModels = async () => {
+      try {
+        const config = {
+          publicPath: typeof window !== 'undefined' ? window.location.origin + '/models/' : '/models/',
+          model: 'medium',
+          debug: false
+        };
+        await preload(config);
+        console.log("AI models preloaded successfully in the background.");
+      } catch (err) {
+        console.error("Failed to preload AI models:", err);
+      }
+    };
+    preloadModels();
+  }, []);
 
   useEffect(() => {
     document.title = currentContent.metaTitle;
