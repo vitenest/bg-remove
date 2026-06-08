@@ -1,5 +1,5 @@
 import React from 'react';
-import { Zap, Mail, Globe, MessageCircle, Phone } from 'lucide-react';
+import { Zap } from 'lucide-react';
 
 function Footer() {
   return (
@@ -20,20 +20,7 @@ function Footer() {
             <p className="footer-desc">
               Advanced AI technology to extract subjects and remove backgrounds with pixel-perfect precision instantly in your browser.
             </p>
-            <div className="footer-socials">
-              <a href="#" className="footer-social-link">
-                <Globe size={20} />
-              </a>
-              <a href="#" className="footer-social-link">
-                <Mail size={20} />
-              </a>
-              <a href="#" className="footer-social-link">
-                <MessageCircle size={20} />
-              </a>
-              <a href="#" className="footer-social-link">
-                <Phone size={20} />
-              </a>
-            </div>
+
           </div>
 
           {/* Product Menu */}
