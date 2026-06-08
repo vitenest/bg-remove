@@ -36,7 +36,7 @@ export async function processVideo(file, onProgress) {
           });
 
           videoEncoder.configure({
-            codec: 'avc1.42001f', // Baseline profile
+            codec: 'avc1.4d002a', // Main profile, Level 4.2 (supports 1080p+)
             width: width,
             height: height,
             bitrate: 2_000_000,

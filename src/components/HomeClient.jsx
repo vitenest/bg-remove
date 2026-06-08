@@ -61,12 +61,13 @@ function HomeClient() {
   const handleFileSelect = async (file) => {
     if (!file) return;
     
-    const isVideo = file.type.startsWith('video/');
+    const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.avi', '.mkv', '.flv', '.wmv', '.m4v'];
+    const isVideo = file.type.startsWith('video/') || videoExtensions.some(ext => file.name.toLowerCase().endsWith(ext));
     
     // Validate file type based on current tool route
     if (toolName === 'video' && !isVideo) {
       setStatus('error');
-      setErrorMessage('Please upload a video file (.mp4, .webm) on this page.');
+      setErrorMessage('Please upload a valid video file on this page.');
       return;
     }
     
@@ -358,113 +359,120 @@ function HomeClient() {
             Edit your photos' backgrounds to white for flawless <strong>e-commerce shots, car listings,</strong> or <strong>professional headshots.</strong> Create a transparent background (PNG) to design the perfect <strong>logo</strong> or <strong>graphic</strong> for any project or presentation. Whatever your need, our AI saves you time and helps you deliver professional results in seconds.
           </p>
           
-          <div className="uses-grid mt-10 grid grid-cols-1 md:grid-cols-3 gap-4 text-left max-w-5xl mx-auto">
-            <div className="use-card bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer flex flex-col justify-between h-32 group">
-              <Brush size={24} className="text-gray-500 mb-2" />
-              <div className="flex items-center justify-between font-medium">
-                Magic Brush <ArrowRight size={18} className="text-gray-400 group-hover:text-black transition-colors" />
+          <div className="uses-grid">
+            <div className="use-card group">
+              <Brush size={24} className="use-card-icon" />
+              <div className="use-card-title">
+                Magic Brush <ArrowRight size={18} className="use-card-arrow" />
               </div>
             </div>
-            <div className="use-card bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer flex flex-col justify-between h-32 group">
-              <Heart size={24} className="text-gray-500 mb-2" />
-              <div className="flex items-center justify-between font-medium">
-                for Individuals <ArrowRight size={18} className="text-gray-400 group-hover:text-black transition-colors" />
+            <div className="use-card group">
+              <Heart size={24} className="use-card-icon" />
+              <div className="use-card-title">
+                for Individuals <ArrowRight size={18} className="use-card-arrow" />
               </div>
             </div>
-            <div className="use-card bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer flex flex-col justify-between h-32 group">
-              <Camera size={24} className="text-gray-500 mb-2" />
-              <div className="flex items-center justify-between font-medium">
-                for Photographers <ArrowRight size={18} className="text-gray-400 group-hover:text-black transition-colors" />
+            <div className="use-card group">
+              <Camera size={24} className="use-card-icon" />
+              <div className="use-card-title">
+                for Photographers <ArrowRight size={18} className="use-card-arrow" />
               </div>
             </div>
-            <div className="use-card bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer flex flex-col justify-between h-32 group">
-              <MessageSquare size={24} className="text-gray-500 mb-2" />
-              <div className="flex items-center justify-between font-medium">
-                for Marketing <ArrowRight size={18} className="text-gray-400 group-hover:text-black transition-colors" />
+            <div className="use-card group">
+              <MessageSquare size={24} className="use-card-icon" />
+              <div className="use-card-title">
+                for Marketing <ArrowRight size={18} className="use-card-arrow" />
               </div>
             </div>
-            <div className="use-card bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer flex flex-col justify-between h-32 group">
-              <Code size={24} className="text-gray-500 mb-2" />
-              <div className="flex items-center justify-between font-medium">
-                for Developers <ArrowRight size={18} className="text-gray-400 group-hover:text-black transition-colors" />
+            <div className="use-card group">
+              <Code size={24} className="use-card-icon" />
+              <div className="use-card-title">
+                for Developers <ArrowRight size={18} className="use-card-arrow" />
               </div>
             </div>
-            <div className="use-card bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer flex flex-col justify-between h-32 group">
-              <Store size={24} className="text-gray-500 mb-2" />
-              <div className="flex items-center justify-between font-medium">
-                for Ecommerce <ArrowRight size={18} className="text-gray-400 group-hover:text-black transition-colors" />
+            <div className="use-card group">
+              <Store size={24} className="use-card-icon" />
+              <div className="use-card-title">
+                for Ecommerce <ArrowRight size={18} className="use-card-arrow" />
               </div>
             </div>
-            <div className="use-card bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer flex flex-col justify-between h-32 group">
-              <Monitor size={24} className="text-gray-500 mb-2" />
-              <div className="flex items-center justify-between font-medium">
-                for Media <ArrowRight size={18} className="text-gray-400 group-hover:text-black transition-colors" />
+            <div className="use-card group">
+              <Monitor size={24} className="use-card-icon" />
+              <div className="use-card-title">
+                for Media <ArrowRight size={18} className="use-card-arrow" />
               </div>
             </div>
-            <div className="use-card bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer flex flex-col justify-between h-32 group">
-              <Car size={24} className="text-gray-500 mb-2" />
-              <div className="flex items-center justify-between font-medium">
-                for Car Dealerships <ArrowRight size={18} className="text-gray-400 group-hover:text-black transition-colors" />
+            <div className="use-card group">
+              <Car size={24} className="use-card-icon" />
+              <div className="use-card-title">
+                for Car Dealerships <ArrowRight size={18} className="use-card-arrow" />
               </div>
             </div>
-            <div className="use-card bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer flex flex-col justify-between h-32 group">
-              <Building size={24} className="text-gray-500 mb-2" />
-              <div className="flex items-center justify-between font-medium">
-                for Enterprise <ArrowRight size={18} className="text-gray-400 group-hover:text-black transition-colors" />
+            <div className="use-card group">
+              <Building size={24} className="use-card-icon" />
+              <div className="use-card-title">
+                for Enterprise <ArrowRight size={18} className="use-card-arrow" />
               </div>
             </div>
           </div>
-        </section>
-
-        {/* Section 4: Boost Efficiency */}
-        <section className="feature-section efficiency-section max-w-6xl mx-auto py-16 px-4">
-          <div className="flex flex-col md:flex-row items-center gap-12">
+        </section>        {/* Section 4: Boost Efficiency */}
+        <section className="efficiency-section">
+          <div className="efficiency-layout">
             
             {/* Left side: 3x3 Grid */}
-            <div className="flex-1 w-full relative">
-              <div className="bg-gray-200 p-4 rounded-3xl aspect-square max-w-md mx-auto shadow-inner border border-gray-300">
-                <div className="grid grid-cols-3 grid-rows-3 gap-3 h-full">
-                  <div className="bg-white rounded-lg overflow-hidden flex items-center justify-center p-2 shadow-sm"><img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=200&q=80" alt="Shoe" className="object-contain h-full mix-blend-multiply" /></div>
-                  <div className="bg-white rounded-lg overflow-hidden flex items-center justify-center p-2 shadow-sm"><img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=200&q=80" alt="Jacket" className="object-contain h-full mix-blend-multiply" /></div>
-                  <div className="bg-white rounded-lg overflow-hidden flex items-center justify-center p-2 shadow-sm"><img src="https://images.unsplash.com/photo-1576871337622-98d48d1cf531?auto=format&fit=crop&w=200&q=80" alt="Hat" className="object-contain h-full mix-blend-multiply" /></div>
-                  <div className="bg-white rounded-lg overflow-hidden flex items-center justify-center p-2 shadow-sm"><img src="https://images.unsplash.com/photo-1599305090598-fe179d501227?auto=format&fit=crop&w=200&q=80" alt="Cosmetic" className="object-contain h-full mix-blend-multiply" /></div>
-                  <div className="bg-white rounded-lg overflow-hidden flex items-center justify-center p-2 shadow-sm"><img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=200&q=80" alt="Pants" className="object-contain h-full mix-blend-multiply" /></div>
-                  <div className="bg-white rounded-lg overflow-hidden flex items-center justify-center p-2 shadow-sm"><img src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?auto=format&fit=crop&w=200&q=80" alt="Blue Shoe" className="object-contain h-full mix-blend-multiply" /></div>
-                  <div className="bg-white rounded-lg overflow-hidden flex items-center justify-center p-2 shadow-sm"><img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=200&q=80" alt="Heels" className="object-contain h-full mix-blend-multiply" /></div>
-                  <div className="bg-white rounded-lg overflow-hidden flex items-center justify-center p-2 shadow-sm"><img src="https://images.unsplash.com/photo-1584916201218-f4242ceb4809?auto=format&fit=crop&w=200&q=80" alt="Bag" className="object-contain h-full mix-blend-multiply" /></div>
-                  <div className="bg-white rounded-lg overflow-hidden flex items-center justify-center p-2 shadow-sm"><img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=200&q=80" alt="Serum" className="object-contain h-full mix-blend-multiply" /></div>
+            <div className="efficiency-image-side">
+              <div className="efficiency-grid-container">
+                <div className="efficiency-grid">
+                  <div className="efficiency-grid-item"><img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=200&q=80" alt="Shoe" className="efficiency-grid-img" /></div>
+                  <div className="efficiency-grid-item"><img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=200&q=80" alt="Jacket" className="efficiency-grid-img" /></div>
+                  <div className="efficiency-grid-item"><img src="https://images.unsplash.com/photo-1576871337622-98d48d1cf531?auto=format&fit=crop&w=200&q=80" alt="Hat" className="efficiency-grid-img" /></div>
+                  <div className="efficiency-grid-item"><img src="https://images.unsplash.com/photo-1599305090598-fe179d501227?auto=format&fit=crop&w=200&q=80" alt="Cosmetic" className="efficiency-grid-img" /></div>
+                  <div className="efficiency-grid-item"><img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=200&q=80" alt="Pants" className="efficiency-grid-img" /></div>
+                  <div className="efficiency-grid-item"><img src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?auto=format&fit=crop&w=200&q=80" alt="Blue Shoe" className="efficiency-grid-img" /></div>
+                  <div className="efficiency-grid-item"><img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=200&q=80" alt="Heels" className="efficiency-grid-img" /></div>
+                  <div className="efficiency-grid-item"><img src="https://images.unsplash.com/photo-1584916201218-f4242ceb4809?auto=format&fit=crop&w=200&q=80" alt="Bag" className="efficiency-grid-img" /></div>
+                  <div className="efficiency-grid-item"><img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=200&q=80" alt="Serum" className="efficiency-grid-img" /></div>
                 </div>
               </div>
             </div>
             
             {/* Right side: Text Content */}
-            <div className="flex-1 text-left">
-              <h2 className="text-4xl font-extrabold text-gray-800 mb-6 leading-tight">
+            <div className="efficiency-text-side">
+              <h2 className="efficiency-title">
                 Boost your efficiency with automated background removal
               </h2>
               
-              <p className="text-lg text-gray-600 mb-6">
+              <p className="efficiency-desc">
                 With our AI platform, deleting backgrounds and extracting the subject from an image is fast and effortless.
               </p>
               
-              <p className="text-lg text-gray-600 mb-6">
-                Bulk editing lets you <strong>process up to 500 images per minute</strong>, while integrations with tools like <strong>Figma, Photoshop,</strong> and <strong>Zapier</strong> embed background removal directly into your workflow.
-              </p>
-              
-              <p className="text-lg text-gray-600 mb-8">
-                And, with the mobile app, you can erase backgrounds on the go, anytime, anywhere.
-              </p>
-              
-              <div className="flex flex-col space-y-4">
-                <a href="#" className="text-blue-600 font-semibold hover:text-blue-800 flex items-center gap-2 group">
-                  View our integrations <ArrowRight size={16} className="transform group-hover:translate-x-1 transition-transform" />
-                </a>
-                <a href="#" className="text-blue-600 font-semibold hover:text-blue-800 flex items-center gap-2 group">
-                  View our API docs <ArrowRight size={16} className="transform group-hover:translate-x-1 transition-transform" />
+              <div className="efficiency-list">
+                <div className="efficiency-list-item">
+                  <div className="efficiency-list-icon">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  </div>
+                  Save time and money
+                </div>
+                <div className="efficiency-list-item">
+                  <div className="efficiency-list-icon">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  </div>
+                  Process images in bulk
+                </div>
+                <div className="efficiency-list-item">
+                  <div className="efficiency-list-icon">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  </div>
+                  Integrate with your workflow
+                </div>
+              </div>
+
+              <div className="efficiency-links">
+                <a href="#" className="efficiency-link group">
+                  View our integrations <ArrowRight size={16} className="use-card-arrow" />
                 </a>
               </div>
             </div>
-            
           </div>
         </section>
 
