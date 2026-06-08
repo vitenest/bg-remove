@@ -23,36 +23,12 @@ function Footer() {
 
           </div>
 
-          {/* Product Menu */}
+          {/* Tools Menu */}
           <div>
-            <h3 className="footer-heading">Product</h3>
+            <h3 className="footer-heading">Tools</h3>
             <ul className="footer-list">
               <li><a href="#" className="footer-link">Background Removal</a></li>
               <li><a href="#" className="footer-link">Video Editing</a></li>
-              <li><a href="#" className="footer-link">API Integration</a></li>
-              <li><a href="#" className="footer-link">Pricing Options</a></li>
-            </ul>
-          </div>
-
-          {/* Resources Menu */}
-          <div>
-            <h3 className="footer-heading">Resources</h3>
-            <ul className="footer-list">
-              <li><a href="#" className="footer-link">Documentation</a></li>
-              <li><a href="#" className="footer-link">Tutorials & Guides</a></li>
-              <li><a href="#" className="footer-link">Help Center</a></li>
-              <li><a href="#" className="footer-link">Community Forum</a></li>
-            </ul>
-          </div>
-
-          {/* Company Menu */}
-          <div>
-            <h3 className="footer-heading">Company</h3>
-            <ul className="footer-list">
-              <li><a href="#" className="footer-link">About ViteNest</a></li>
-              <li><a href="#" className="footer-link">Careers</a></li>
-              <li><a href="#" className="footer-link">Privacy Policy</a></li>
-              <li><a href="#" className="footer-link">Terms of Service</a></li>
             </ul>
           </div>
         </div>

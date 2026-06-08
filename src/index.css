@@ -1056,14 +1056,15 @@ footer {
   padding: 0 16px;
 }
 .footer-grid {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 48px;
   margin-bottom: 48px;
 }
 @media (min-width: 768px) {
   .footer-grid {
-    grid-template-columns: repeat(4, 1fr);
+    flex-direction: row;
+    justify-content: space-between;
   }
 }
 .footer-brand-section {
