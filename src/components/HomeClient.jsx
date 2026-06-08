@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { useDropzone } from 'react-dropzone';
+
 import { AlertCircle, File, Image as ImageIcon, Film, Download, RefreshCcw, Plus, ArrowRight, Brush, Heart, Camera, MessageSquare, Code, Store, Monitor, Car, Building } from 'lucide-react';
 import { initRMBGModel, processImageRMBG } from '../utils/rmbg';
 import { processVideo } from '../utils/videoProcessor';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Twitter, Github, Instagram, Linkedin, Zap } from 'lucide-react';
+import { Zap, Mail, Globe, MessageCircle, Phone } from 'lucide-react';
 
 function Footer() {
   return (
@@ -22,16 +22,16 @@ function Footer() {
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-blue-500 transition-colors">
-                <Twitter size={20} />
+                <Globe size={20} />
               </a>
               <a href="#" className="text-gray-400 hover:text-gray-900 transition-colors">
-                <Github size={20} />
+                <Mail size={20} />
               </a>
               <a href="#" className="text-gray-400 hover:text-pink-600 transition-colors">
-                <Instagram size={20} />
+                <MessageCircle size={20} />
               </a>
               <a href="#" className="text-gray-400 hover:text-blue-700 transition-colors">
-                <Linkedin size={20} />
+                <Phone size={20} />
               </a>
             </div>
           </div>
