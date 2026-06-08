@@ -76,7 +76,7 @@ function HomeClient() {
       if (isImage) {
         const config = {
           publicPath: typeof window !== 'undefined' ? window.location.origin + '/models/' : '/models/',
-          model: 'medium',
+          model: 'isnet_fp16',
           debug: false,
           output: { format: 'image/png', quality: 1.0 }
         };
