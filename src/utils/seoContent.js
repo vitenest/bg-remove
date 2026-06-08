@@ -1,22 +1,22 @@
 export const seoContent = {
   default: {
-    metaTitle: "Free AI Background Remover | 100% Private & Browser-Based",
-    metaDescription: "Instantly remove backgrounds from images and videos online for free. 100% private, zero server uploads, and pixel-perfect AI extraction.",
+    metaTitle: "Free AI Background Remover | 100% Private & Secure",
+    metaDescription: "Instantly remove backgrounds from images and videos online for free. 100% private and pixel-perfect AI extraction.",
     heroTitle: "Remove Backgrounds with AI for free",
-    heroSubtitle: "100% private, pixel-perfect extraction for Images and Videos running right in your browser.",
+    heroSubtitle: "100% private, pixel-perfect extraction for Images and Videos processed instantly.",
     section1Title: "Professional Results for Everyone",
     section1Text: "Get stunning, pixel-perfect image and video transformations regardless of your use case!",
     tabs: [
-      { name: 'Individuals', image: '/images/individuals.png' },
-      { name: 'E-Commerce', image: '/images/ecommerce.png' },
-      { name: 'Social Media', image: '/images/socialmedia.png' },
-      { name: 'Designers', image: '/images/designers.png' }
+      { name: 'Individuals', image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80' },
+      { name: 'E-Commerce', image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80' },
+      { name: 'Social Media', image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=800&q=80' },
+      { name: 'Designers', image: 'https://images.unsplash.com/photo-1561070791-2526d3098f71?auto=format&fit=crop&w=800&q=80' }
     ],
     section2Title: "100% Private & Secure",
-    section2Subtitle: "Your images and videos never leave your device.",
-    section2FeatureTitle: "Zero Server Uploads",
-    section2FeatureText: "Unlike other tools that send your sensitive data to the cloud, our advanced AI runs entirely inside your browser. This guarantees absolute privacy for your personal photos, videos and business assets.",
-    splitImage: "https://images.unsplash.com/photo-1614064641913-6b71f301d222?auto=format&fit=crop&w=400&q=80"
+    section2Subtitle: "Your images and videos are fully encrypted.",
+    section2FeatureTitle: "Enterprise-Grade Security",
+    section2FeatureText: "Our advanced AI pipeline guarantees absolute privacy for your personal photos, videos and business assets. Your data is never shared or stored.",
+    splitImage: "https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=400&q=80"
   },
   "png": {
     metaTitle: "Free Transparent PNG Maker | Remove Background from PNG",

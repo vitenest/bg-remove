@@ -1,5 +1,5 @@
 import { Muxer, ArrayBufferTarget } from 'mp4-muxer';
-import { removeBackground } from '@imgly/background-removal';
+import { processImageRMBG } from './rmbg';
 
 export async function processVideo(file, onProgress) {
   return new Promise((resolve, reject) => {
@@ -49,15 +49,7 @@ export async function processVideo(file, onProgress) {
           canvas.height = height;
           const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
-          const config = {
-            publicPath: typeof window !== 'undefined' ? window.location.origin + '/models/' : '/models/',
-            model: 'medium',
-            debug: false,
-            output: {
-              format: 'image/png',
-              quality: 1.0
-            }
-          };
+          // Model is already initialized during preload
 
           for (let i = 0; i < totalFrames; i++) {
             const time = i / fps;
@@ -77,7 +69,9 @@ export async function processVideo(file, onProgress) {
             ctx.drawImage(video, 0, 0, width, height);
             
             const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
-            const processedBlob = await removeBackground(blob, config);
+            const blobUrl = URL.createObjectURL(blob);
+            const processedBlob = await processImageRMBG(blobUrl);
+            URL.revokeObjectURL(blobUrl);
             
             const img = new Image();
             img.src = URL.createObjectURL(processedBlob);
