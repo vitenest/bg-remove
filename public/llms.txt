@@ -1,0 +1,29 @@
+# bg-remove.com - AI Background Remover
+
+This is a free online tool to instantly remove backgrounds from images and videos.
+We use advanced local AI models (running entirely in the browser via WebGL/WASM) to ensure 100% privacy, security, and extremely fast performance. No data is ever uploaded to external servers.
+
+## Key Features
+- High-quality image background removal
+- Video background removal (mp4, webm, etc.)
+- 100% private (processed on-device)
+- Completely free to use
+
+## Tools
+We offer specialized landing pages for various use-cases:
+- Transparent PNG Maker
+- Remove Background from JPG/JPEG
+- Extract Images from PDF
+- GIF Background Remover
+- Logo Background Remover
+- Signature Background Remover
+- Change Backgrounds
+- Passport Photo Maker
+- AI Background Generator
+
+## Technical Architecture
+- Framework: Next.js (App Router)
+- AI Pipeline: ONNX Runtime Web, Transformers.js
+- Styling: Vanilla CSS
+
+No API keys are required for the client-side processing. All computation happens locally, making it infinitely scalable at zero server cost.

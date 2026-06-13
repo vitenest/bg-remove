@@ -3,6 +3,17 @@ const nextConfig = {
     // Enable server components to use external packages without failing build
     serverExternalPackages: ['@huggingface/transformers'],
 
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'images.unsplash.com',
+                port: '',
+                pathname: '/**',
+            },
+        ],
+    },
+
     webpack: (config) => {
         // Fix for transformers.js build failing on webpack client build
         config.resolve.alias = {

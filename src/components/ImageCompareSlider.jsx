@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
+import Image from 'next/image';
 import { ChevronsLeftRight } from 'lucide-react';
 
 const ImageCompareSlider = ({ original, processed }) => {
@@ -21,41 +22,92 @@ const ImageCompareSlider = ({ original, processed }) => {
 
   return (
     <div 
-      className="image-compare-container rounded-xl overflow-hidden shadow-lg relative select-none w-full max-w-4xl mx-auto"
+      className="image-compare-container"
       ref={containerRef}
       onMouseMove={(e) => {
-        if (e.buttons === 1) handleDrag(e); // Only drag when primary mouse button is pressed
+        if (e.buttons === 1) handleDrag(e);
       }}
       onTouchMove={handleDrag}
-      style={{ aspectRatio: '16/9', maxHeight: '70vh' }}
+      style={{
+        position: 'relative',
+        width: '100%',
+        maxWidth: '900px',
+        margin: '0 auto',
+        aspectRatio: '16/9',
+        maxHeight: '70vh',
+        borderRadius: '12px',
+        overflow: 'hidden',
+        boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
+        userSelect: 'none'
+      }}
     >
       {/* Base layer: Processed Image (Transparent with Checkerboard) */}
-      <div className="absolute inset-0 w-full h-full checkerboard bg-gray-100">
-        <img 
+      <div 
+        className="checkerboard"
+        style={{
+          position: 'absolute',
+          top: 0, left: 0, right: 0, bottom: 0,
+          width: '100%', height: '100%',
+          backgroundColor: '#f3f4f6'
+        }}
+      >
+        <Image 
           src={processed} 
           alt="Background Removed" 
-          className="w-full h-full object-contain pointer-events-none" 
+          fill
+          unoptimized={typeof processed === 'string' && processed.startsWith('blob:')}
+          style={{ objectFit: 'contain', pointerEvents: 'none' }}
         />
       </div>
 
       {/* Top layer: Original Image (Clipped) */}
       <div 
-        className="absolute inset-0 w-full h-full bg-white"
-        style={{ clipPath: `polygon(0 0, ${sliderPosition}% 0, ${sliderPosition}% 100%, 0 100%)` }}
+        style={{
+          position: 'absolute',
+          top: 0, left: 0, right: 0, bottom: 0,
+          width: '100%', height: '100%',
+          backgroundColor: '#ffffff',
+          clipPath: `polygon(0 0, ${sliderPosition}% 0, ${sliderPosition}% 100%, 0 100%)`
+        }}
       >
-        <img 
+        <Image 
           src={original} 
           alt="Original" 
-          className="w-full h-full object-contain pointer-events-none" 
+          fill
+          unoptimized={typeof original === 'string' && original.startsWith('blob:')}
+          style={{ objectFit: 'contain', pointerEvents: 'none' }}
         />
       </div>
 
       {/* Slider Line & Handle */}
       <div 
-        className="absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize hover:bg-purple-100 transition-colors shadow-[0_0_10px_rgba(0,0,0,0.3)] z-10"
-        style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
+        style={{
+          position: 'absolute',
+          top: 0, bottom: 0,
+          left: `${sliderPosition}%`,
+          transform: 'translateX(-50%)',
+          width: '4px',
+          backgroundColor: '#ffffff',
+          cursor: 'ew-resize',
+          boxShadow: '0 0 10px rgba(0,0,0,0.3)',
+          zIndex: 10
+        }}
       >
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg border-2 border-gray-200">
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '40px',
+          height: '40px',
+          backgroundColor: '#ffffff',
+          borderRadius: '50%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+          border: '2px solid #e5e7eb'
+        }}>
           <ChevronsLeftRight size={20} color="#4b5563" />
         </div>
       </div>
@@ -67,14 +119,49 @@ const ImageCompareSlider = ({ original, processed }) => {
         max="100"
         value={sliderPosition}
         onChange={(e) => setSliderPosition(parseFloat(e.target.value))}
-        className="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-20"
+        style={{
+          position: 'absolute',
+          top: 0, left: 0, right: 0, bottom: 0,
+          width: '100%', height: '100%',
+          opacity: 0,
+          cursor: 'ew-resize',
+          zIndex: 20
+        }}
       />
       
       {/* Labels */}
-      <div className="absolute top-4 left-4 bg-black/60 text-white px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm shadow-sm pointer-events-none z-10 transition-opacity" style={{ opacity: sliderPosition < 15 ? 0 : 1 }}>
+      <div style={{
+        position: 'absolute',
+        top: '16px', left: '16px',
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        color: '#ffffff',
+        padding: '4px 12px',
+        borderRadius: '9999px',
+        fontSize: '12px',
+        fontWeight: '600',
+        backdropFilter: 'blur(4px)',
+        pointerEvents: 'none',
+        zIndex: 10,
+        opacity: sliderPosition < 15 ? 0 : 1,
+        transition: 'opacity 0.2s'
+      }}>
         Original
       </div>
-      <div className="absolute top-4 right-4 bg-black/60 text-white px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm shadow-sm pointer-events-none z-10 transition-opacity" style={{ opacity: sliderPosition > 85 ? 0 : 1 }}>
+      <div style={{
+        position: 'absolute',
+        top: '16px', right: '16px',
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        color: '#ffffff',
+        padding: '4px 12px',
+        borderRadius: '9999px',
+        fontSize: '12px',
+        fontWeight: '600',
+        backdropFilter: 'blur(4px)',
+        pointerEvents: 'none',
+        zIndex: 10,
+        opacity: sliderPosition > 85 ? 0 : 1,
+        transition: 'opacity 0.2s'
+      }}>
         Result
       </div>
     </div>

@@ -1,5 +1,6 @@
 "use client";
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { Layers, ChevronDown, File, FileText, FileImage, Diamond, PenTool, Image as ImageIcon, Camera, Code, Cpu } from 'lucide-react';
 import { getCookie, setCookie } from '../utils/browserTracker';
@@ -21,8 +22,7 @@ function Navbar() {
   return (
     <nav className="navbar">
       <Link href="/" className="nav-brand">
-        <Layers size={28} color="#d946ef" />
-        <span>bg-remove.com</span>
+        <Image src="/images/logo-bg-remove.png" alt="bg-remove logo" width={240} height={64} style={{ objectFit: 'contain', height: '64px', width: 'auto' }} priority />
       </Link>
       
       <div className="nav-links">
@@ -64,6 +64,9 @@ function Navbar() {
           Erase Video Background {showNewBadge && <span className="badge-new">NEW</span>}
         </Link>
         <Link href="/features" className="nav-link">Features</Link>
+        <a href="https://vitenest.com/products" target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem', borderRadius: '8px', textDecoration: 'none' }}>
+          More Tools
+        </a>
       </div>
     </nav>
   );
