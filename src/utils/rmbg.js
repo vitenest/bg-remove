@@ -9,7 +9,7 @@ import {
 env.allowLocalModels = false;
 if (env.backends?.onnx?.wasm) {
   env.backends.onnx.wasm.wasmPaths = '/';
-  env.backends.onnx.wasm.proxy = true; // Run WebAssembly in a Web Worker
+  env.backends.onnx.wasm.proxy = false; // Disable Web Worker proxy to fix Failed to fetch error
 }
 
 let model = null;
