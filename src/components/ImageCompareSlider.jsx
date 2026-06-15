@@ -51,12 +51,10 @@ const ImageCompareSlider = ({ original, processed }) => {
           backgroundColor: '#f3f4f6'
         }}
       >
-        <Image 
+        <img 
           src={processed} 
           alt="Background Removed" 
-          fill
-          unoptimized={typeof processed === 'string' && processed.startsWith('blob:')}
-          style={{ objectFit: 'contain', pointerEvents: 'none' }}
+          style={{ width: '100%', height: '100%', objectFit: 'contain', pointerEvents: 'none', display: 'block' }}
         />
       </div>
 
@@ -70,12 +68,10 @@ const ImageCompareSlider = ({ original, processed }) => {
           clipPath: `polygon(0 0, ${sliderPosition}% 0, ${sliderPosition}% 100%, 0 100%)`
         }}
       >
-        <Image 
+        <img 
           src={original} 
           alt="Original" 
-          fill
-          unoptimized={typeof original === 'string' && original.startsWith('blob:')}
-          style={{ objectFit: 'contain', pointerEvents: 'none' }}
+          style={{ width: '100%', height: '100%', objectFit: 'contain', pointerEvents: 'none', display: 'block' }}
         />
       </div>
 

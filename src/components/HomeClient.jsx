@@ -86,6 +86,11 @@ function HomeClient() {
     }
 
     setMediaType(type);
+    
+    // Clean up old blob URLs to free memory before creating new ones
+    if (originalMedia) URL.revokeObjectURL(originalMedia);
+    if (processedMedia) URL.revokeObjectURL(processedMedia);
+    
     const objectUrl = URL.createObjectURL(file);
     setOriginalMedia(objectUrl);
     setProcessedMedia(null);
@@ -132,6 +137,10 @@ function HomeClient() {
   };
 
   const reset = () => {
+    // Clean up blob URLs to free memory
+    if (originalMedia) URL.revokeObjectURL(originalMedia);
+    if (processedMedia) URL.revokeObjectURL(processedMedia);
+    
     setStatus('idle');
     setOriginalMedia(null);
     setProcessedMedia(null);
