@@ -8,6 +8,7 @@ import {
 // Configure Transformers.js
 env.allowLocalModels = false;
 if (env.backends?.onnx?.wasm) {
+  env.backends.onnx.wasm.wasmPaths = '/';
   env.backends.onnx.wasm.proxy = true; // Run WebAssembly in a Web Worker
 }
 
