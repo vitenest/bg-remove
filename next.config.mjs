@@ -14,6 +14,21 @@ const nextConfig = {
         ],
     },
 
+    async headers() {
+        return [
+            {
+                source: '/wasm/:path*',
+                headers: [
+                    {
+                        key: 'Content-Type',
+                        value: 'application/wasm',
+                    },
+                ],
+            },
+        ];
+    },
+
+
     webpack: (config) => {
         // Fix for transformers.js build failing on webpack client build
         config.resolve.alias = {
