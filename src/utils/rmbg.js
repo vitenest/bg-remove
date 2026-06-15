@@ -63,7 +63,11 @@ export async function initRMBGModel(onProgress) {
 
 export async function processImageRMBG(imageUrl) {
   if (!model || !processor) {
-    throw new Error("Model not initialized. Call initRMBGModel first.");
+    await initRMBGModel();
+  }
+
+  if (!model || !processor) {
+    throw new Error("Model failed to initialize.");
   }
 
   // Load image
