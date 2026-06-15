@@ -8,7 +8,7 @@ import {
 // Configure Transformers.js
 env.allowLocalModels = false;
 if (env.backends?.onnx?.wasm) {
-  env.backends.onnx.wasm.wasmPaths = '/';
+  env.backends.onnx.wasm.wasmPaths = '/wasm/';
   env.backends.onnx.wasm.proxy = false; // Disable Web Worker proxy to fix Failed to fetch error
 }
 
