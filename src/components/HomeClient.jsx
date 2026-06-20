@@ -3,7 +3,7 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import Image from 'next/image';
 
-import { AlertCircle, File, Image as ImageIcon, Film, Download, RefreshCcw, Plus, ArrowRight, Brush, Heart, Camera, MessageSquare, Code, Store, Monitor, Car, Building } from 'lucide-react';
+import { AlertCircle, File, Image as ImageIcon, Film, Download, RefreshCcw, Plus, ArrowRight, Brush, Heart, Camera, MessageSquare, Code, Store, Monitor, Car, Building, Lock } from 'lucide-react';
 import { initRMBGModel, processImageRMBG } from '../utils/rmbg';
 import { processVideo } from '../utils/videoProcessor';
 import { canProcess, getWaitTimeMs, recordUsage, formatWaitTime } from '../utils/usageTracker';
@@ -297,8 +297,19 @@ function HomeClient() {
                   </div>
                 </div>
               ) : (
-                <div className="mb-6">
-                  <ImageCompareSlider original={originalMedia} processed={processedMedia} />
+                <div className="image-comparison">
+                  <div className="image-card">
+                    <div className="image-card-title text-gray mb-2">Original</div>
+                    <div className="image-wrapper">
+                      <img src={originalMedia} alt="Original" />
+                    </div>
+                  </div>
+                  <div className="image-card">
+                    <div className="image-card-title gradient-text mb-2">Background Removed</div>
+                    <div className="image-wrapper checkerboard">
+                      <img src={processedMedia} alt="Background Removed" />
+                    </div>
+                  </div>
                 </div>
               )}
 
@@ -379,7 +390,9 @@ function HomeClient() {
         <section className="feature-section split-section">
           <div className="split-image-container">
              <div className="mock-stacked-images">
-                <Image src={currentContent.splitImage} alt="Privacy Shield" className="mock-img-front" width={250} height={300} />
+                <div className="mock-img-front">
+                  <Lock size={64} color="#22c55e" strokeWidth={2} />
+                </div>
                 <div className="mock-shape-circle"></div>
              </div>
           </div>
@@ -569,7 +582,7 @@ function HomeClient() {
             </div>
             <div className="faq-item glass-panel">
               <h4>Is there a file size limit?</h4>
-              <p>Our system can handle high-resolution photos and short 10-second videos with ease.</p>
+              <p>Our system can handle high-resolution photos and short videos with ease. Individually, not a single file can be more than 100MB.</p>
             </div>
           </div>
         </section>

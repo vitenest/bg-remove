@@ -2,11 +2,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { Layers, ChevronDown, File, FileText, FileImage, Diamond, PenTool, Image as ImageIcon, Camera, Code, Cpu } from 'lucide-react';
+import { Layers, ChevronDown, File, FileText, FileImage, Diamond, PenTool, Image as ImageIcon, Camera, Code, Cpu, Menu, X } from 'lucide-react';
 import { getCookie, setCookie } from '../utils/browserTracker';
 
 function Navbar() {
   const [showNewBadge, setShowNewBadge] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const hidden = getCookie('hideVideoBadge');
@@ -18,6 +19,7 @@ function Navbar() {
   const handleVideoClick = () => {
     setCookie('hideVideoBadge', 'true', 30);
     setShowNewBadge(false);
+    setIsMobileMenuOpen(false);
   };
   return (
     <nav className="navbar">
@@ -25,7 +27,15 @@ function Navbar() {
         <Image src="/images/logo-bg-remove.png" alt="bg-remove logo" width={240} height={64} style={{ objectFit: 'contain', height: '64px', width: 'auto' }} priority />
       </Link>
       
-      <div className="nav-links">
+      <button 
+        className="mobile-menu-toggle" 
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        aria-label="Toggle menu"
+      >
+        {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+      </button>
+
+      <div className={`nav-links ${isMobileMenuOpen ? 'active' : ''}`}>
         <div className="nav-item-dropdown">
           <Link href="/" className="nav-link">Erase Background <ChevronDown size={14} /></Link>
           
