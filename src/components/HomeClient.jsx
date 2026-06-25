@@ -39,6 +39,33 @@ function HomeClient() {
   const [limitMessage, setLimitMessage] = useState('');
   const [isDragging, setIsDragging] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [imageProcessTime, setImageProcessTime] = useState(0);
+  
+  useEffect(() => {
+    let interval;
+    if (status === 'processing' && mediaType === 'image') {
+      setImageProcessTime(0);
+      interval = setInterval(() => {
+        setImageProcessTime(prev => prev + 1);
+      }, 1000);
+    } else {
+      setImageProcessTime(0);
+    }
+    return () => clearInterval(interval);
+  }, [status, mediaType]);
+
+  const getProcessingTitle = () => {
+    if (['video', 'pdf', 'gif'].includes(mediaType)) {
+      if (progress < 10) return 'Analyzing file...';
+      if (progress < 90) return `Removing Background... ${progress}%`;
+      return 'Preparing to download...';
+    }
+    
+    if (imageProcessTime < 2) return 'Analyzing image...';
+    if (imageProcessTime < 5) return 'Removing Background...';
+    if (imageProcessTime < 7) return 'Polishing Edges...';
+    return 'Preparing to download...';
+  };
   
   const [activeTab, setActiveTab] = useState(currentContent.tabs[0].name);
 
@@ -302,7 +329,7 @@ function HomeClient() {
             <div className="processing-container glass-panel">
               <div className="spinner"></div>
               <div className="dropzone-text processing-title">
-                {['video', 'pdf', 'gif'].includes(mediaType) ? `Processing... ${progress}%` : 'Removing Background...'}
+                {getProcessingTitle()}
               </div>
               {['video', 'pdf', 'gif'].includes(mediaType) && (
                 <div className="progress-bar-bg">
