@@ -6,8 +6,6 @@ import Image from 'next/image';
 import { AlertCircle, File, Image as ImageIcon, Film, Download, RefreshCcw, Plus, ArrowRight, Brush, Heart, Camera, MessageSquare, Code, Store, Monitor, Car, Building, Lock } from 'lucide-react';
 import { initRMBGModel, processImageRMBG } from '../utils/rmbg';
 import { processVideo } from '../utils/videoProcessor';
-import { processPdf } from '../utils/pdfProcessor';
-import { processGif } from '../utils/gifProcessor';
 import { canProcess, getWaitTimeMs, recordUsage, formatWaitTime } from '../utils/usageTracker';
 import { useParams } from 'next/navigation';
 import { seoContent } from '../utils/seoContent';
@@ -116,11 +114,13 @@ function HomeClient() {
 
     try {
       if (type === 'pdf') {
+        const { processPdf } = await import('../utils/pdfProcessor');
         const processedUrl = await processPdf(file, (p) => setProgress(p));
         setProcessedMedia(processedUrl);
         recordUsage('image');
         setStatus('success');
       } else if (type === 'gif') {
+        const { processGif } = await import('../utils/gifProcessor');
         const processedUrl = await processGif(file, (p) => setProgress(p));
         setProcessedMedia(processedUrl);
         recordUsage('image');
