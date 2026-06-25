@@ -68,6 +68,15 @@ function HomeClient() {
   };
   
   const [activeTab, setActiveTab] = useState(currentContent.tabs[0].name);
+  
+  const resultRef = useRef(null);
+  useEffect(() => {
+    if (status === 'success' && resultRef.current) {
+      setTimeout(() => {
+        resultRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    }
+  }, [status]);
 
   useEffect(() => {
     if (currentContent.tabs && currentContent.tabs.length > 0) {
@@ -341,7 +350,7 @@ function HomeClient() {
           )}
 
           {status === 'success' && (
-            <div className="result-container glass-panel">
+            <div className="result-container glass-panel" ref={resultRef}>
               <AdPlacement type="horizontal" style={{ margin: '0 0 2rem 0' }} />
               {mediaType === 'video' ? (
                 <div className="image-comparison">
