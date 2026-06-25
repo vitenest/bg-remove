@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { AlertCircle, File, Image as ImageIcon, Film, Download, RefreshCcw, Plus, ArrowRight, Brush, Heart, Camera, MessageSquare, Code, Store, Monitor, Car, Building, Lock } from 'lucide-react';
 import { initRMBGModel, processImageRMBG } from '../utils/rmbg';
 import { processVideo } from '../utils/videoProcessor';
+import { processPdf } from '../utils/pdfProcessor';
+import { processGif } from '../utils/gifProcessor';
 import { canProcess, getWaitTimeMs, recordUsage, formatWaitTime } from '../utils/usageTracker';
 import { useParams } from 'next/navigation';
 import { seoContent } from '../utils/seoContent';
@@ -55,11 +57,24 @@ function HomeClient() {
     
     const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.avi', '.mkv', '.flv', '.wmv', '.m4v'];
     const isVideo = file.type.startsWith('video/') || videoExtensions.some(ext => file.name.toLowerCase().endsWith(ext));
+    const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+    const isGif = file.type === 'image/gif' || file.name.toLowerCase().endsWith('.gif');
+    const isImage = file.type.startsWith('image/');
     
     // Validate file type based on current tool route
     if (toolName === 'video' && !isVideo) {
       setStatus('error');
       setErrorMessage('Please upload a valid video file on this page.');
+      return;
+    }
+    if (toolName === 'pdf' && !isPdf) {
+      setStatus('error');
+      setErrorMessage('Please upload a valid PDF file on this page.');
+      return;
+    }
+    if (toolName === 'gif' && !isGif) {
+      setStatus('error');
+      setErrorMessage('Please upload a valid GIF file on this page.');
       return;
     }
     
@@ -68,16 +83,16 @@ function HomeClient() {
       setErrorMessage('Please upload an image file on this page. To process videos, please navigate to the Video Background Remover tool.');
       return;
     }
-    
-    const isImage = file.type.startsWith('image/');
 
-    if (!isVideo && !isImage) {
-      setErrorMessage('Please upload a valid image or video file.');
+    if (!isVideo && !isImage && !isPdf) {
+      setErrorMessage('Please upload a valid image, video, PDF or GIF file.');
       setStatus('error');
       return;
     }
 
-    const type = isVideo ? 'video' : 'image';
+    let type = isVideo ? 'video' : 'image';
+    if (isPdf) type = 'pdf';
+    if (isGif && toolName === 'gif') type = 'gif';
     if (!canProcess(type)) {
       const waitMs = getWaitTimeMs(type);
       setLimitMessage(`You have reached the limit for ${type}s. Please come back after ${formatWaitTime(waitMs)}.`);
@@ -100,7 +115,17 @@ function HomeClient() {
     setProgress(0);
 
     try {
-      if (isImage) {
+      if (type === 'pdf') {
+        const processedUrl = await processPdf(file, (p) => setProgress(p));
+        setProcessedMedia(processedUrl);
+        recordUsage('image');
+        setStatus('success');
+      } else if (type === 'gif') {
+        const processedUrl = await processGif(file, (p) => setProgress(p));
+        setProcessedMedia(processedUrl);
+        recordUsage('image');
+        setStatus('success');
+      } else if (isImage) {
         const blob = await processImageRMBG(objectUrl);
         const processedUrl = URL.createObjectURL(blob);
         setProcessedMedia(processedUrl);
@@ -155,7 +180,11 @@ function HomeClient() {
     if (!processedMedia) return;
     const a = document.createElement('a');
     a.href = processedMedia;
-    a.download = mediaType === 'video' ? 'magic_remove_result.mp4' : 'magic_remove_result.png';
+    let ext = 'png';
+    if (mediaType === 'video') ext = 'mp4';
+    if (mediaType === 'pdf') ext = 'pdf';
+    if (mediaType === 'gif') ext = 'gif';
+    a.download = `magic_remove_result.${ext}`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -199,7 +228,7 @@ function HomeClient() {
                   type="file" 
                   ref={fileInputRef} 
                   className="file-input-hidden" 
-                  accept={toolName === 'video' ? "video/*" : "image/*"}
+                  accept={toolName === 'video' ? "video/*" : toolName === 'pdf' ? "application/pdf" : toolName === 'gif' ? "image/gif" : "image/*"}
                   onChange={(e) => {
                     if (e.target.files && e.target.files.length > 0) {
                       handleFileSelect(e.target.files[0]);
@@ -218,6 +247,8 @@ function HomeClient() {
                       <div className="icons-row">
                         {toolName === 'video' ? (
                           <Film size={40} className="dropzone-icon" />
+                        ) : toolName === 'pdf' ? (
+                          <File size={40} className="dropzone-icon" />
                         ) : (
                           <ImageIcon size={40} className="dropzone-icon" />
                         )}
@@ -229,11 +260,15 @@ function HomeClient() {
                         <div className="btn-icon-wrapper">
                           <Plus size={16} />
                         </div>
-                        {toolName === 'video' ? 'Upload Video' : 'Upload Image'}
+                        {toolName === 'video' ? 'Upload Video' : toolName === 'pdf' ? 'Upload PDF' : toolName === 'gif' ? 'Upload GIF' : 'Upload Image'}
                       </button>
                       <div className="dropzone-text font-bold">
                         {toolName === 'video' 
                           ? 'Drop a video to magically remove the background.' 
+                          : toolName === 'pdf' 
+                          ? 'Drop a PDF to magically remove the backgrounds.' 
+                          : toolName === 'gif' 
+                          ? 'Drop a GIF to magically remove the background.' 
                           : 'Drop an image to magically remove the background.'}
                       </div>
                       <div className="dropzone-subtext mt-2">
@@ -267,9 +302,9 @@ function HomeClient() {
             <div className="processing-container glass-panel">
               <div className="spinner"></div>
               <div className="dropzone-text processing-title">
-                {mediaType === 'video' ? `Processing Video... ${progress}%` : 'Removing Background...'}
+                {['video', 'pdf', 'gif'].includes(mediaType) ? `Processing... ${progress}%` : 'Removing Background...'}
               </div>
-              {mediaType === 'video' && (
+              {['video', 'pdf', 'gif'].includes(mediaType) && (
                 <div className="progress-bar-bg">
                   <div className="progress-bar-fill" style={{ width: `${progress}%` }}></div>
                 </div>
@@ -293,6 +328,21 @@ function HomeClient() {
                     <div className="image-card-title gradient-text mb-2">Background Removed</div>
                     <div className="image-wrapper checkerboard">
                       <video src={processedMedia} autoPlay loop muted playsInline />
+                    </div>
+                  </div>
+                </div>
+              ) : mediaType === 'pdf' ? (
+                <div className="image-comparison">
+                  <div className="image-card">
+                    <div className="image-card-title text-gray mb-2">Original</div>
+                    <div className="image-wrapper" style={{ height: '400px' }}>
+                      <iframe src={originalMedia} width="100%" height="100%" title="Original PDF"></iframe>
+                    </div>
+                  </div>
+                  <div className="image-card">
+                    <div className="image-card-title gradient-text mb-2">Background Removed</div>
+                    <div className="image-wrapper checkerboard" style={{ height: '400px' }}>
+                      <iframe src={processedMedia} width="100%" height="100%" title="Processed PDF"></iframe>
                     </div>
                   </div>
                 </div>
@@ -365,10 +415,11 @@ function HomeClient() {
               {(() => {
                 const activeTabData = currentContent.tabs.find(t => t.name === activeTab) || currentContent.tabs[0];
                 if (activeTabData.processedImage) {
-                  return <ImageCompareSlider original={activeTabData.image} processed={activeTabData.processedImage} />;
+                  return <ImageCompareSlider key={activeTabData.name} original={activeTabData.image} processed={activeTabData.processedImage} />;
                 }
                 return (
                   <Image 
+                    key={activeTabData.name}
                     src={activeTabData.image} 
                     alt={activeTab} 
                     className="tab-image rounded-lg" 

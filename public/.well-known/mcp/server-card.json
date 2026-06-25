@@ -1,0 +1,14 @@
+{
+  "serverInfo": {
+    "name": "bg-remove-mcp",
+    "version": "1.0.0"
+  },
+  "transport": {
+    "type": "sse",
+    "endpoint": "https://api.example.com/mcp/sse"
+  },
+  "capabilities": {
+    "tools": true,
+    "resources": true
+  }
+}

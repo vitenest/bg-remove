@@ -1302,6 +1302,11 @@ footer {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
+  .uses-grid > .use-card:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc(50% - 6px);
+  }
   .use-card {
     height: auto;
     aspect-ratio: 1 / 1;

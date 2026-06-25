@@ -12,7 +12,7 @@ function Footer() {
           {/* Brand & Desc */}
           <div className="footer-brand-section">
             <div className="footer-brand-title">
-              <Image src="/images/logo-bg-remove.png" alt="bg-remove logo" width={240} height={64} style={{ objectFit: 'contain', height: '64px', width: 'auto' }} />
+              <Image src="/images/logo-bg-remove.png" alt="bg-remove logo" width={240} height={64} style={{ objectFit: 'contain', objectPosition: 'left', height: '64px', width: 'auto' }} />
             </div>
             <p className="footer-desc" style={{ maxWidth: '400px' }}>
               The ultimate free online background remover. Seamlessly extract subjects from images and videos with lightning speed and absolute privacy.

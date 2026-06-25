@@ -1,0 +1,12 @@
+{
+  "issuer": "https://auth.example.com",
+  "authorization_endpoint": "https://auth.example.com/oauth2/authorize",
+  "token_endpoint": "https://auth.example.com/oauth2/token",
+  "jwks_uri": "https://auth.example.com/.well-known/jwks.json",
+  "grant_types_supported": ["authorization_code", "client_credentials"],
+  "agent_auth": {
+    "register_uri": "https://auth.example.com/register",
+    "supported_identity_types": ["urn:ietf:params:oauth:client-assertion-type:jwt-bearer"],
+    "credential_types": ["client_secret_basic", "private_key_jwt"]
+  }
+}

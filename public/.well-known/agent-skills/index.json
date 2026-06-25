@@ -1,0 +1,12 @@
+{
+  "$schema": "https://raw.githubusercontent.com/cloudflare/agent-skills-discovery-rfc/main/schema.json",
+  "skills": [
+    {
+      "name": "remove_background",
+      "type": "api",
+      "description": "Removes the background from an image.",
+      "url": "https://api.example.com/v1/openapi.json",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "protocol": "ucp",
+  "version": "1.0",
+  "services": {
+    "payment": "https://pay.example.com/ucp"
+  },
+  "capabilities": ["http_payments", "lightning"]
+}

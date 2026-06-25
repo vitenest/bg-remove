@@ -1,0 +1,24 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "bg-remove API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/premium": {
+      "get": {
+        "summary": "Premium Background Removal",
+        "responses": {
+          "200": { "description": "Success" },
+          "402": { "description": "Payment Required" }
+        },
+        "x-payment-info": {
+          "intent": "charge",
+          "method": "stripe",
+          "amount": 50,
+          "currency": "USD"
+        }
+      }
+    }
+  }
+}
