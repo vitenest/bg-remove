@@ -12,12 +12,28 @@ export async function processVideo(file, onProgress) {
       video.onloadedmetadata = async () => {
         try {
           const duration = video.duration;
-          const width = video.videoWidth;
-          const height = video.videoHeight;
+          let width = video.videoWidth;
+          let height = video.videoHeight;
           
+          // Cap resolution to 640px to massively speed up AI processing
+          const MAX_DIM = 640;
+          if (width > MAX_DIM || height > MAX_DIM) {
+            const ratio = width / height;
+            if (ratio > 1) {
+              width = MAX_DIM;
+              height = Math.round(MAX_DIM / ratio);
+            } else {
+              height = MAX_DIM;
+              width = Math.round(MAX_DIM * ratio);
+            }
+          }
+          // Ensure even dimensions for mp4 encoder
+          width = width - (width % 2);
+          height = height - (height % 2);
+
           // Limit to 10 seconds to prevent memory issues in browser
           const processDuration = Math.min(duration, 10);
-          const fps = 30; // standard fps
+          const fps = 12; // Reduced from 30 to 12 fps for 2.5x speedup without sacrificing too much smoothness
           const totalFrames = Math.floor(processDuration * fps);
           
           let muxer = new Muxer({
