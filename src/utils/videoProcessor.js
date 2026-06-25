@@ -53,17 +53,14 @@ export async function processVideo(file, onProgress) {
 
           for (let i = 0; i < totalFrames; i++) {
             const time = i / fps;
-            video.currentTime = time;
             
             await new Promise((res) => {
-              const checkReady = () => {
-                if (video.readyState >= 2 && Math.abs(video.currentTime - time) < 0.05) {
-                  video.removeEventListener('seeked', checkReady);
-                  res();
-                }
+              const onSeeked = () => {
+                video.removeEventListener('seeked', onSeeked);
+                res();
               };
-              video.addEventListener('seeked', checkReady);
-              checkReady(); // Check immediately in case it's already there
+              video.addEventListener('seeked', onSeeked);
+              video.currentTime = time;
             });
 
             ctx.drawImage(video, 0, 0, width, height);

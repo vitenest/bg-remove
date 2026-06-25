@@ -312,6 +312,9 @@ function HomeClient() {
                           ? 'Max Video Duration: 10s. Limit: 3 vids / 1 hr.'
                           : 'Limit: 25 imgs / 15 mins.'}
                       </div>
+                      <div className="dropzone-subtext mt-3" style={{ color: '#10b981', fontWeight: 500, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                        <Lock size={14} /> 100% Private: Processed on your device. Files are never uploaded.
+                      </div>
                     </>
                   )}
                 </div>
