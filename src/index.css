@@ -1251,7 +1251,9 @@ footer {
   }
   .mega-menu {
     position: static;
-    transform: none;
+    transform: none !important;
+    animation: none;
+    opacity: 1;
     display: none;
     grid-template-columns: 1fr;
     box-shadow: none;
@@ -1259,6 +1261,9 @@ footer {
     padding: 1rem 0 0 1rem;
     margin-top: 0;
     width: 100%;
+  }
+  .mega-menu::before, .mega-menu::after {
+    display: none;
   }
   .nav-item-dropdown:focus-within .mega-menu,
   .nav-item-dropdown:active .mega-menu,
