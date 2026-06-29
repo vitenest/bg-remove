@@ -10,7 +10,6 @@ import { canProcess, getWaitTimeMs, recordUsage, formatWaitTime } from '../utils
 import { useParams } from 'next/navigation';
 import { seoContent } from '../utils/seoContent';
 import ImageCompareSlider from './ImageCompareSlider';
-import AdPlacement from './AdPlacement';
 
 function HomeClient() {
   const params = useParams();
@@ -247,9 +246,7 @@ function HomeClient() {
           </h1>
           <p className="hero-subtitle">{currentContent.heroSubtitle}</p>
           
-          <div style={{ margin: '2rem 0' }}>
-            <AdPlacement type="horizontal" />
-          </div>
+
           
           {status === 'idle' || status === 'error' ? (
             <>
@@ -319,9 +316,7 @@ function HomeClient() {
                   )}
                 </div>
               </div>
-              <div style={{ margin: '2rem 0' }}>
-                <AdPlacement type="horizontal" />
-              </div>
+
             </>
           ) : null}
 
@@ -354,7 +349,6 @@ function HomeClient() {
 
           {status === 'success' && (
             <div className="result-container glass-panel" ref={resultRef}>
-              <AdPlacement type="horizontal" style={{ margin: '0 0 2rem 0' }} />
               {mediaType === 'video' ? (
                 <div className="image-comparison">
                   <div className="image-card">
@@ -402,7 +396,7 @@ function HomeClient() {
                 </div>
               )}
 
-              <AdPlacement type="horizontal" style={{ margin: '1rem 0 2rem 0' }} />
+
 
               <div className="actions mt-6">
                 <button className="btn-secondary" onClick={reset}>
@@ -427,7 +421,7 @@ function HomeClient() {
                   </a>
                 </div>
               </div>
-              <AdPlacement type="horizontal" style={{ margin: '3rem 0 0 0' }} />
+
             </div>
           )}
         </section>
@@ -472,9 +466,7 @@ function HomeClient() {
           </div>
         </section>
 
-        <div style={{ padding: '0 2rem' }}>
-          <AdPlacement type="horizontal" />
-        </div>
+
 
         {/* Section 2: Dynamic Privacy/Features */}
         <section className="feature-section split-section">
@@ -497,9 +489,7 @@ function HomeClient() {
           </div>
         </section>
 
-        <div style={{ padding: '0 2rem' }}>
-          <AdPlacement type="horizontal" />
-        </div>
+
 
         {/* Section 3: One tool, endless uses */}
         <section className="feature-section text-center uses-section">
@@ -566,9 +556,7 @@ function HomeClient() {
           </div>
         </section>        
         
-        <div style={{ padding: '0 2rem' }}>
-          <AdPlacement type="horizontal" />
-        </div>
+
         
         {/* Section 4: Boost Efficiency */}
         <section className="efficiency-section">
@@ -627,9 +615,7 @@ function HomeClient() {
           </div>
         </section>
 
-        <div style={{ padding: '0 2rem' }}>
-          <AdPlacement type="horizontal" />
-        </div>
+
 
         {/* Section 5: How it Works */}
         <section className="feature-section text-center how-it-works-section">
@@ -654,9 +640,7 @@ function HomeClient() {
           </div>
         </section>
 
-        <div style={{ padding: '0 2rem' }}>
-          <AdPlacement type="horizontal" />
-        </div>
+
 
         {/* Section 4: FAQ */}
         <section className="feature-section faq-section">

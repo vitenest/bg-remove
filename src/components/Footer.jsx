@@ -31,6 +31,19 @@ function Footer() {
             </ul>
           </div>
 
+          {/* Company Links */}
+          <div className="footer-links-section">
+            <h3 className="footer-heading">Company</h3>
+            <ul className="footer-list">
+              <li><Link href="/about" className="footer-link">About Us</Link></li>
+              <li><Link href="/contact" className="footer-link">Contact Us</Link></li>
+              <li><Link href="/blog" className="footer-link">Blog</Link></li>
+              <li><Link href="/privacy" className="footer-link">Privacy Policy</Link></li>
+              <li><Link href="/terms" className="footer-link">Terms of Service</Link></li>
+              <li><Link href="/disclaimer" className="footer-link">Disclaimer</Link></li>
+            </ul>
+          </div>
+
           {/* More Free Tools Menu */}
           <div className="footer-ecosystem-section">
             <h3 className="footer-heading">More Free Tools</h3>
