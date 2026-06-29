@@ -21,44 +21,42 @@ export default function AdBanner({ type, className = '' }) {
   const adId = getAdId();
   const isDummy = !adId || adId.includes('dummy');
 
-  useEffect(() => {
-    if (!isDummy && type === 'native' && containerRef.current && !containerRef.current.hasChildNodes()) {
-      // Native Banner Injection
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.async = true;
-      script.setAttribute('data-cfasync', 'false');
-      script.src = `https://pl30130412.effectivecpmnetwork.com/${adId}/invoke.js`;
-      containerRef.current.appendChild(script);
-    }
-  }, [adId, isDummy, type]);
-
   const getDimensions = () => {
     if (type === 'native') return { width: '100%', height: 'auto', minHeight: '250px' };
     const [w, h] = type.split('x');
     return { width: `${w}px`, height: `${h}px`, minHeight: `${h}px` };
   };
 
-  const dimensions = getDimensions();
-
-  const getIframeSrcDoc = (w, h, id) => `<!DOCTYPE html>
-<html>
-  <head>
-    <style>body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; background: transparent; overflow: hidden; }</style>
-  </head>
-  <body>
-    <script type="text/javascript">
-      atOptions = {
-        'key' : '${id}',
-        'format' : 'iframe',
-        'height' : ${parseInt(h, 10)},
-        'width' : ${parseInt(w, 10)},
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="https://www.highperformanceformat.com/${id}/invoke.js"></script>
-  </body>
-</html>`;
+  useEffect(() => {
+    if (!isDummy && containerRef.current && !containerRef.current.hasChildNodes()) {
+      if (type === 'native') {
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.async = true;
+        script.setAttribute('data-cfasync', 'false');
+        script.src = `https://pl30130412.effectivecpmnetwork.com/${adId}/invoke.js`;
+        containerRef.current.appendChild(script);
+      } else {
+        const dimensions = getDimensions();
+        const configScript = document.createElement('script');
+        configScript.type = 'text/javascript';
+        configScript.innerHTML = `atOptions = {
+          'key' : '${adId}',
+          'format' : 'iframe',
+          'height' : ${parseInt(dimensions.height, 10)},
+          'width' : ${parseInt(dimensions.width, 10)},
+          'params' : {}
+        };`;
+        
+        const invokeScript = document.createElement('script');
+        invokeScript.type = 'text/javascript';
+        invokeScript.src = `https://www.highperformanceformat.com/${adId}/invoke.js`;
+        
+        containerRef.current.appendChild(configScript);
+        containerRef.current.appendChild(invokeScript);
+      }
+    }
+  }, [adId, isDummy, type]);
 
   return (
     <div className={`ad-container ${className}`} style={{
@@ -66,15 +64,14 @@ export default function AdBanner({ type, className = '' }) {
       justifyContent: 'center',
       margin: '1.5rem auto',
       width: '100%',
-      maxWidth: type === 'native' ? '1000px' : dimensions.width,
+      maxWidth: type === 'native' ? '1000px' : getDimensions().width,
       overflow: 'hidden'
     }}>
       {isDummy ? (
         <div style={{
-          width: dimensions.width,
+          width: getDimensions().width,
           maxWidth: '100%',
-          height: dimensions.height,
-          minHeight: dimensions.minHeight,
+          height: getDimensions().height,
           backgroundColor: 'rgba(0, 0, 0, 0.03)',
           border: '1px dashed #e5e7eb',
           borderRadius: '12px',
@@ -89,29 +86,14 @@ export default function AdBanner({ type, className = '' }) {
         }}>
           Ad Placeholder: {type}
         </div>
-      ) : type === 'native' ? (
+      ) : (
         <div 
           ref={containerRef} 
           id={`container-${adId}`} 
           style={{ 
-            minWidth: '100%', 
-            minHeight: dimensions.minHeight,
             display: 'flex',
-            justifyContent: 'center'
-          }} 
-        />
-      ) : (
-        <iframe
-          srcDoc={getIframeSrcDoc(dimensions.width, dimensions.height, adId)}
-          width={parseInt(dimensions.width, 10)}
-          height={parseInt(dimensions.height, 10)}
-          frameBorder="0"
-          scrolling="no"
-          style={{ 
-            display: 'block', 
-            margin: '0 auto', 
-            minWidth: dimensions.width, 
-            minHeight: dimensions.minHeight 
+            justifyContent: 'center',
+            alignItems: 'center'
           }} 
         />
       )}
