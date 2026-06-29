@@ -101,6 +101,9 @@ export async function processVideo(file, onProgress) {
             frame.close();
 
             onProgress(Math.round(((i + 1) / totalFrames) * 100));
+            
+            // Yield to the event loop to prevent the browser from hanging/crashing
+            await new Promise(resolve => setTimeout(resolve, 20));
           }
 
           await videoEncoder.flush();
