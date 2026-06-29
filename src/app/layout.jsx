@@ -2,6 +2,7 @@ import '../index.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import WebMCPProvider from '../components/WebMCPProvider';
+import AdBlockDetector from '../components/AdBlockDetector';
 
 export const metadata = {
   title: 'bg-remove.com - AI Background Remover',
@@ -33,6 +34,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           ></iframe>
         </noscript>
         {/* End Google Tag Manager (noscript) */}
+        <AdBlockDetector />
         <WebMCPProvider />
         <Navbar />
         <main>
