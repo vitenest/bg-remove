@@ -10,9 +10,9 @@ export default function AdBanner({ type, className = '' }) {
       case 'native': return '9347a32f7bdbc94f350d019836ebb681';
       case '468x60': return '67286763890a78c12aad668ddaf86b0b';
       case '300x250': return '54db04cd5ab8b113dc390f80d2c552b0';
-      case '160x600': return process.env.NEXT_PUBLIC_ADSTERRA_160X600;
-      case '160x300': return process.env.NEXT_PUBLIC_ADSTERRA_160X300;
-      case '320x50': return process.env.NEXT_PUBLIC_ADSTERRA_320X50;
+      case '160x600': return '3c4bbd1b5f95eee467521b864a02bc4b';
+      case '160x300': return '3c4bbd1b5f95eee467521b864a02bc4b'; // Fallback to 160x600 key
+      case '320x50': return '5b91b208b7c893f71b71c50b71f4980b';
       case '728x90': return '33d55c68b268bf6400af34bca4b7de4c';
       default: return null;
     }
