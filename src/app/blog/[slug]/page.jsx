@@ -52,11 +52,11 @@ export default async function BlogPostPage({ params }) {
       
       {/* Basic blog styling for the injected HTML */}
         <style dangerouslySetInnerHTML={{__html: `
-          .blog-content h2 { margin-top: 3rem; margin-bottom: 1.5rem; font-size: 1.8rem; color: #fff; }
-          .blog-content p { margin-bottom: 1.5rem; color: #e4e4e7; }
-          .blog-content ul, .blog-content ol { padding-left: 1.5rem; margin-bottom: 1.5rem; color: #e4e4e7; }
+          .blog-content h2 { margin-top: 3rem; margin-bottom: 1.5rem; font-size: 1.8rem; color: #111111; }
+          .blog-content p { margin-bottom: 1.5rem; color: #52525b; }
+          .blog-content ul, .blog-content ol { padding-left: 1.5rem; margin-bottom: 1.5rem; color: #52525b; }
           .blog-content li { margin-bottom: 0.5rem; }
-          .blog-content strong { color: #fff; }
+          .blog-content strong { color: #111111; }
         `}} />
     </div>
   );

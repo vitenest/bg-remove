@@ -11,7 +11,7 @@ export default function ContactPage() {
         <p>If you have any questions, feedback, or business inquiries, we'd love to hear from you. Please reach out to us using the information below.</p>
         
         <h2 style={{ marginTop: '2rem', marginBottom: '1rem', fontSize: '1.5rem' }}>Email Support</h2>
-        <p>You can contact our support team at: <strong>support@bg-remove.com</strong></p>
+        <p>You can contact our support team at: <strong>hello@vitenest.com</strong></p>
         
         <h2 style={{ marginTop: '2rem', marginBottom: '1rem', fontSize: '1.5rem' }}>Business Inquiries</h2>
         <p>For partnerships, media coverage, and other business-related matters, please email: <strong>business@bg-remove.com</strong></p>

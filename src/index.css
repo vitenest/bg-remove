@@ -1431,3 +1431,10 @@ footer {
   line-height: 1.6;
   font-size: 1rem;
 }
+
+/* Responsive Ad Display Rules */
+.ad-desktop { display: none !important; }
+.ad-tablet { display: none !important; }
+.ad-mobile { display: block !important; }
+@media (min-width: 768px) { .ad-desktop { display: none !important; } .ad-tablet { display: block !important; } .ad-mobile { display: none !important; } }
+@media (min-width: 1024px) { .ad-desktop { display: block !important; } .ad-tablet { display: none !important; } .ad-mobile { display: none !important; } }

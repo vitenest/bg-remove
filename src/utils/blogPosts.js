@@ -319,7 +319,7 @@ export const blogPosts = [
     excerpt: 'Digitize your signature for PDFs and contracts seamlessly. Learn how to extract your signature from paper to a transparent PNG.',
     date: 'April 28, 2026',
     readTime: '3 min read',
-    featuredImage: 'https://images.unsplash.com/photo-1583526627581-2244955fcab1?auto=format&fit=crop&w=1200&q=80',
+    featuredImage: '/images/digital_signature_blog.png',
     content: `
       <p>In our increasingly paperless world, signing digital documents is a daily necessity. Whether you are signing an employment contract, approving an invoice, or finalizing a lease, you need a digital version of your signature.</p>
       

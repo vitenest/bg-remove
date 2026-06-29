@@ -10,6 +10,7 @@ import { canProcess, getWaitTimeMs, recordUsage, formatWaitTime } from '../utils
 import { useParams } from 'next/navigation';
 import { seoContent } from '../utils/seoContent';
 import ImageCompareSlider from './ImageCompareSlider';
+import AdBanner from './AdBanner';
 
 function HomeClient() {
   const params = useParams();
@@ -246,6 +247,12 @@ function HomeClient() {
           </h1>
           <p className="hero-subtitle">{currentContent.heroSubtitle}</p>
           
+          {/* Top Header Ads - Responsive */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '2rem' }}>
+            <AdBanner type="728x90" className="ad-desktop" />
+            <AdBanner type="468x60" className="ad-tablet" />
+            <AdBanner type="320x50" className="ad-mobile" />
+          </div>
 
           
           {status === 'idle' || status === 'error' ? (
@@ -426,6 +433,16 @@ function HomeClient() {
           )}
         </section>
         
+        {/* Mobile Ad Below Converter */}
+        <div style={{ margin: '1.5rem 0' }}>
+          <AdBanner type="300x250" className="ad-mobile" />
+        </div>
+
+        {/* High CTR Native Feed Below Converter */}
+        <div style={{ margin: '3rem 0' }}>
+          <AdBanner type="native" />
+        </div>
+
         {/* Section 1: Dynamic Features */}
         <section className="feature-section text-center">
           <h2>{currentContent.section1Title}</h2>
@@ -660,6 +677,11 @@ function HomeClient() {
             </div>
           </div>
         </section>
+
+        {/* Medium Rectangle near bottom content */}
+        <div style={{ margin: '3rem 0', display: 'flex', justifyContent: 'center' }}>
+          <AdBanner type="300x250" />
+        </div>
 
       </div>
     </>
