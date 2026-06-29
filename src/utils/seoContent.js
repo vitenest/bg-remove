@@ -1,7 +1,7 @@
 export const seoContent = {
   default: {
-    metaTitle: "Free AI Background Remover | 100% Private & Secure",
-    metaDescription: "Instantly remove backgrounds from images and videos online for free. 100% private and pixel-perfect AI extraction.",
+    metaTitle: "Free AI Background Remover | Remove Background from Image HD",
+    metaDescription: "Instantly remove background from image for free. Use our transparent background maker and HD image background remover for pixel-perfect AI extraction.",
     heroTitle: "Remove Backgrounds with AI for free",
     heroSubtitle: "100% private, pixel-perfect extraction for Images and Videos processed instantly.",
     section1Title: "Professional Results for Everyone",
@@ -19,8 +19,8 @@ export const seoContent = {
     splitImage: "/images/privacy_minimal.png"
   },
   "png": {
-    metaTitle: "Free Transparent PNG Maker | Remove Background from PNG",
-    metaDescription: "Remove the background from any PNG image for free. Create transparent PNGs instantly in your browser with zero privacy risks.",
+    metaTitle: "Free Transparent PNG Maker | PNG Background Remover",
+    metaDescription: "Remove background from PNG images for free. Our HD transparent PNG maker creates perfect cutouts instantly in your browser with zero privacy risks.",
     heroTitle: "Transparent PNG Maker with AI for free",
     heroSubtitle: "Instantly remove backgrounds from PNG files to create perfectly transparent images. Fast, free, and completely private.",
     section1Title: "Flawless Transparent PNGs",
@@ -38,8 +38,8 @@ export const seoContent = {
     splitImage: "/images/privacy_minimal.png"
   },
   "jpg": {
-    metaTitle: "Convert JPG to Transparent Background Free",
-    metaDescription: "Easily remove the background from JPG/JPEG images online. Convert JPG to transparent PNG instantly and privately.",
+    metaTitle: "Remove Background from JPG | Convert JPG to Transparent PNG",
+    metaDescription: "Easily remove background from JPG/JPEG images online. Use our free JPG background eraser to convert JPG to transparent PNG instantly and privately.",
     heroTitle: "Remove Background from JPG for free",
     heroSubtitle: "Transform your standard JPG images into stunning transparent cutouts instantly with our browser-based AI.",
     section1Title: "Seamless JPG Conversion",
@@ -57,8 +57,8 @@ export const seoContent = {
     splitImage: "/images/privacy_minimal.png"
   },
   "jpeg": {
-    metaTitle: "Remove Background from JPEG Free | Transparent AI Tool",
-    metaDescription: "Free online tool to remove backgrounds from JPEG images. Fast, precise, and completely secure AI background eraser.",
+    metaTitle: "Free JPEG Background Remover | Transparent AI Eraser",
+    metaDescription: "Free online tool to remove background from JPEG images. Fast, precise, and completely secure HD AI background eraser.",
     heroTitle: "Remove Background from JPEG for free",
     heroSubtitle: "Extract subjects from your JPEG photos in seconds. High-quality transparent cutouts without any subscriptions.",
     section1Title: "Professional JPEG Cutouts",
@@ -76,8 +76,8 @@ export const seoContent = {
     splitImage: "/images/privacy_minimal.png"
   },
   "pdf": {
-    metaTitle: "Extract Images & Remove Background from PDF Free",
-    metaDescription: "Remove backgrounds from images inside PDF files. Fast and secure local AI processing for your documents.",
+    metaTitle: "Remove Background from PDF Free | Extract PDF Images",
+    metaDescription: "Remove backgrounds from images inside PDF files. Fast and secure local AI processing for your documents to extract transparent images.",
     heroTitle: "Remove Background from PDF for free",
     heroSubtitle: "Clean up images and graphics from your PDF documents instantly. 100% private processing.",
     section1Title: "Clean PDF Assets",
@@ -96,7 +96,7 @@ export const seoContent = {
   },
   "gif": {
     metaTitle: "Free GIF Background Remover | Transparent Animated GIFs",
-    metaDescription: "Remove the background from animated GIFs for free online. Create transparent GIFs instantly using private local AI.",
+    metaDescription: "Remove background from GIF for free online. Create transparent animated GIFs instantly using our private local AI video processing tool.",
     heroTitle: "Remove Background from GIF for free",
     heroSubtitle: "Make your animated GIFs transparent in seconds. High-quality frame-by-frame AI extraction.",
     section1Title: "Stunning Transparent GIFs",
@@ -113,10 +113,9 @@ export const seoContent = {
     section2FeatureText: "Our AI processes each GIF frame locally in your browser, guaranteeing fast results and zero privacy risks.",
     splitImage: "/images/privacy_minimal.png"
   },
-
   "logo": {
     metaTitle: "Free Transparent Logo Maker | Remove Background from Logo",
-    metaDescription: "Make your logo transparent for free. Instantly remove white or solid backgrounds from logos with our AI tool.",
+    metaDescription: "Make your logo transparent for free. Instantly remove white or solid backgrounds from logos with our HD AI transparent background maker.",
     heroTitle: "Make Logos Transparent for free",
     heroSubtitle: "Instantly remove backgrounds from any logo to create versatile, transparent brand assets.",
     section1Title: "Crisp, Clear Logos",
@@ -135,7 +134,7 @@ export const seoContent = {
   },
   "signature": {
     metaTitle: "Extract Signature from Image | Free Transparent Signature",
-    metaDescription: "Remove the background from your handwritten signature. Create a transparent digital signature securely online.",
+    metaDescription: "Remove the background from your handwritten signature. Create a transparent digital signature securely and instantly online for free.",
     heroTitle: "Transparent Signature Extractor for free",
     heroSubtitle: "Digitize your handwritten signature by instantly removing the paper background. 100% secure and private.",
     section1Title: "Flawless Digital Signatures",
@@ -152,10 +151,9 @@ export const seoContent = {
     section2FeatureText: "We know signatures are sensitive. That's why our AI processes your signature entirely inside your browser—it never leaves your device.",
     splitImage: "/images/privacy_minimal.png"
   },
-
   "video": {
-    metaTitle: "Free Video Background Remover | Erase Video Background",
-    metaDescription: "Remove the background from any video for free online. Instantly create transparent videos using our local AI without any server uploads.",
+    metaTitle: "Free Video Background Remover | Erase Video Background HD",
+    metaDescription: "Remove video background free online. Instantly erase video backgrounds and create transparent videos using our local AI without any server uploads.",
     heroTitle: "Erase Video Backgrounds for free",
     heroSubtitle: "Magically remove the background from any video file entirely in your browser. 100% private and blazing fast.",
     section1Title: "Professional Video Effects",

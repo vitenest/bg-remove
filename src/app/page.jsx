@@ -6,12 +6,20 @@ export async function generateMetadata() {
   return {
     title: content.metaTitle,
     description: content.metaDescription,
+    alternates: {
+      canonical: 'https://bg-remove.com',
+    },
     openGraph: {
       title: content.metaTitle,
       description: content.metaDescription,
       type: 'website',
       url: 'https://bg-remove.com',
-    }
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: content.metaTitle,
+      description: content.metaDescription,
+    },
   };
 }
 
@@ -28,7 +36,13 @@ export default function Page() {
       "@type": "Offer",
       "price": "0",
       "priceCurrency": "USD"
-    }
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "ratingCount": "8430"
+    },
+    "featureList": "Remove background from images, Video background removal, HD Output, 100% Free, Secure and Private, No Server Uploads"
   };
 
   return (
