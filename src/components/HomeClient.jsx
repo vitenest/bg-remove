@@ -4,8 +4,6 @@ import React, { useState, useCallback, useRef, useEffect } from 'react';
 import Image from 'next/image';
 
 import { AlertCircle, File, Image as ImageIcon, Film, Download, RefreshCcw, Plus, ArrowRight, Brush, Heart, Camera, MessageSquare, Code, Store, Monitor, Car, Building, Lock } from 'lucide-react';
-import { initRMBGModel, processImageRMBG } from '../utils/rmbg';
-import { processVideo } from '../utils/videoProcessor';
 import { canProcess, getWaitTimeMs, recordUsage, formatWaitTime } from '../utils/usageTracker';
 import { useParams } from 'next/navigation';
 import { seoContent } from '../utils/seoContent';
@@ -17,18 +15,9 @@ function HomeClient() {
   const toolName = params?.toolName;
   const currentContent = seoContent[toolName] || seoContent.default;
 
-  useEffect(() => {
-    // Preload the AI models in the background so they are ready instantly when the user drops a file
-    const preloadModels = async () => {
-      try {
-        await initRMBGModel();
-        console.log("AI models preloaded successfully in the background.");
-      } catch (err) {
-        console.error("Failed to preload AI models:", err);
-      }
-    };
-    preloadModels();
-  }, []);
+  // We intentionally do not preload the AI model on mount anymore. 
+  // It was blocking the main thread and choking the network, causing massive page load delays.
+  // The model will be initialized dynamically when the user actually uploads a file.
 
 
   const [status, setStatus] = useState('idle'); // idle, processing, success, error, limit_reached
@@ -162,12 +151,14 @@ function HomeClient() {
         recordUsage('image');
         setStatus('success');
       } else if (isImage) {
+        const { processImageRMBG } = await import('../utils/rmbg');
         const blob = await processImageRMBG(objectUrl);
         const processedUrl = URL.createObjectURL(blob);
         setProcessedMedia(processedUrl);
         recordUsage('image');
         setStatus('success');
       } else if (isVideo) {
+        const { processVideo } = await import('../utils/videoProcessor');
         const processedUrl = await processVideo(file, (p) => setProgress(p));
         setProcessedMedia(processedUrl);
         recordUsage('video');
