@@ -255,6 +255,19 @@ function HomeClient() {
           </div>
 
           
+          {/* Main Tool Area with Ads */}
+          <div className="tool-layout-wrapper">
+            {/* Left Skyscraper (Desktop only) */}
+            <div className="ad-skyscraper ad-desktop">
+              <AdBanner type="160x600" />
+            </div>
+
+            <div className="tool-main-container">
+              {/* Mobile Top Ad (Mobile only) */}
+              <div className="ad-mobile-banner ad-mobile">
+                <AdBanner type="320x50" />
+              </div>
+
           {status === 'idle' || status === 'error' ? (
             <>
               <div 
@@ -431,10 +444,24 @@ function HomeClient() {
 
             </div>
           )}
+
+              {/* Mobile Bottom Ad (Mobile only) */}
+              <div className="ad-mobile-banner ad-mobile" style={{ marginTop: '2rem' }}>
+                <AdBanner type="320x50" />
+              </div>
+            </div>
+
+            {/* Right Skyscraper (Desktop only) */}
+            <div className="ad-skyscraper ad-desktop">
+              <AdBanner type="160x600" />
+            </div>
+          </div>
         </section>
         
-        {/* Mobile Ad Below Converter */}
-        <div style={{ margin: '1.5rem 0' }}>
+        {/* Ad Below Converter */}
+        <div style={{ margin: '1.5rem 0', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <AdBanner type="468x60" className="ad-desktop" />
+          <AdBanner type="468x60" className="ad-tablet" />
           <AdBanner type="300x250" className="ad-mobile" />
         </div>
 
@@ -507,6 +534,12 @@ function HomeClient() {
         </section>
 
 
+        {/* Inter-section Ad Banner */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '4rem 0' }}>
+          <AdBanner type="728x90" className="ad-desktop" />
+          <AdBanner type="300x250" className="ad-tablet" />
+          <AdBanner type="300x250" className="ad-mobile" />
+        </div>
 
         {/* Section 3: One tool, endless uses */}
         <section className="feature-section text-center uses-section">
@@ -573,7 +606,12 @@ function HomeClient() {
           </div>
         </section>        
         
-
+        {/* Inter-section Ad Banner */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '4rem 0' }}>
+          <AdBanner type="728x90" className="ad-desktop" />
+          <AdBanner type="300x250" className="ad-tablet" />
+          <AdBanner type="300x250" className="ad-mobile" />
+        </div>
         
         {/* Section 4: Boost Efficiency */}
         <section className="efficiency-section">
@@ -633,6 +671,12 @@ function HomeClient() {
         </section>
 
 
+        {/* Inter-section Ad Banner */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '4rem 0' }}>
+          <AdBanner type="728x90" className="ad-desktop" />
+          <AdBanner type="300x250" className="ad-tablet" />
+          <AdBanner type="300x250" className="ad-mobile" />
+        </div>
 
         {/* Section 5: How it Works */}
         <section className="feature-section text-center how-it-works-section">
@@ -657,7 +701,12 @@ function HomeClient() {
           </div>
         </section>
 
-
+        {/* Inter-section Ad Banner */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '4rem 0' }}>
+          <AdBanner type="728x90" className="ad-desktop" />
+          <AdBanner type="300x250" className="ad-tablet" />
+          <AdBanner type="300x250" className="ad-mobile" />
+        </div>
 
         {/* Section 4: FAQ */}
         <section className="feature-section faq-section">

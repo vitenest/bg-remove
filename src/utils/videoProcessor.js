@@ -15,8 +15,8 @@ export async function processVideo(file, onProgress) {
           let width = video.videoWidth;
           let height = video.videoHeight;
           
-          // Cap resolution to 640px to massively speed up AI processing
-          const MAX_DIM = 640;
+          // Cap resolution to 360px to massively speed up AI processing
+          const MAX_DIM = 360;
           if (width > MAX_DIM || height > MAX_DIM) {
             const ratio = width / height;
             if (ratio > 1) {
@@ -33,7 +33,7 @@ export async function processVideo(file, onProgress) {
 
           // Limit to 10 seconds to prevent memory issues in browser
           const processDuration = Math.min(duration, 10);
-          const fps = 12; // Reduced from 30 to 12 fps for 2.5x speedup without sacrificing too much smoothness
+          const fps = 10; // Reduced to 10 fps for superfast processing
           const totalFrames = Math.floor(processDuration * fps);
           
           let muxer = new Muxer({

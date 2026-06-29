@@ -7,13 +7,13 @@ export default function AdBanner({ type, className = '' }) {
 
   const getAdId = () => {
     switch (type) {
-      case 'native': return process.env.NEXT_PUBLIC_ADSTERRA_NATIVE_ID;
-      case '468x60': return process.env.NEXT_PUBLIC_ADSTERRA_468X60;
-      case '300x250': return process.env.NEXT_PUBLIC_ADSTERRA_300X250;
+      case 'native': return '9347a32f7bdbc94f350d019836ebb681';
+      case '468x60': return '67286763890a78c12aad668ddaf86b0b';
+      case '300x250': return '54db04cd5ab8b113dc390f80d2c552b0';
       case '160x600': return process.env.NEXT_PUBLIC_ADSTERRA_160X600;
       case '160x300': return process.env.NEXT_PUBLIC_ADSTERRA_160X300;
       case '320x50': return process.env.NEXT_PUBLIC_ADSTERRA_320X50;
-      case '728x90': return process.env.NEXT_PUBLIC_ADSTERRA_728X90;
+      case '728x90': return '33d55c68b268bf6400af34bca4b7de4c';
       default: return null;
     }
   };
@@ -28,7 +28,7 @@ export default function AdBanner({ type, className = '' }) {
       script.type = 'text/javascript';
       script.async = true;
       script.setAttribute('data-cfasync', 'false');
-      script.src = `https://pl29637924.effectivecpmnetwork.com/${adId}/invoke.js`;
+      script.src = `https://pl30130412.effectivecpmnetwork.com/${adId}/invoke.js`;
       containerRef.current.appendChild(script);
     }
   }, [adId, isDummy, type]);

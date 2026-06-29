@@ -24,14 +24,32 @@ export async function initRMBGModel(onProgress) {
   isInitializing = true;
   initPromise = (async () => {
     try {
-      model = await AutoModel.from_pretrained("briaai/RMBG-1.4", {
-        revision: "main",
-        progress_callback: (progress) => {
-          if (onProgress && progress.status === 'progress') {
-            onProgress(progress.progress || 0);
+      let device = 'wasm';
+      if (typeof navigator !== 'undefined' && navigator.gpu) {
+        device = 'webgpu';
+      }
+      try {
+        model = await AutoModel.from_pretrained("briaai/RMBG-1.4", {
+          revision: "main",
+          device: device,
+          progress_callback: (progress) => {
+            if (onProgress && progress.status === 'progress') {
+              onProgress(progress.progress || 0);
+            }
           }
-        }
-      });
+        });
+      } catch (e) {
+        console.warn("WebGPU initialization failed, falling back to WASM", e);
+        model = await AutoModel.from_pretrained("briaai/RMBG-1.4", {
+          revision: "main",
+          device: "wasm",
+          progress_callback: (progress) => {
+            if (onProgress && progress.status === 'progress') {
+              onProgress(progress.progress || 0);
+            }
+          }
+        });
+      }
 
       processor = await AutoProcessor.from_pretrained("briaai/RMBG-1.4", {
         revision: "main",
