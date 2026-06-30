@@ -115,7 +115,7 @@ function HomeClient() {
 
     let type = isVideo ? 'video' : 'image';
     if (isPdf) type = 'pdf';
-    if (isGif && toolName === 'gif') type = 'gif';
+    if (isGif) type = 'gif';
     if (!canProcess(type)) {
       const waitMs = getWaitTimeMs(type);
       setLimitMessage(`You have reached the limit for ${type}s. Please come back after ${formatWaitTime(waitMs)}.`);
