@@ -416,10 +416,35 @@ body {
   background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
 }
 
-.image-wrapper img {
+.image-wrapper img, .image-wrapper video, .image-wrapper iframe {
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+.image-comparison {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.image-card {
+  flex: 1 1 300px;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+.image-card-title {
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+  text-align: center;
 }
 
 .actions {
