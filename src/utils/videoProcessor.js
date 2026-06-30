@@ -36,37 +36,14 @@ export async function processVideo(file, onProgress) {
           const fps = 10; // Reduced to 10 fps for superfast processing
           const totalFrames = Math.floor(processDuration * fps);
           
-          let muxer = new Muxer({
-            target: new ArrayBufferTarget(),
-            video: {
-              codec: 'avc',
-              width: width,
-              height: height
-            },
-            fastStart: 'in-memory'
-          });
-
-          let videoEncoder = new VideoEncoder({
-            output: (chunk, meta) => muxer.addVideoChunk(chunk, meta),
-            error: e => reject(e)
-          });
-
-          videoEncoder.configure({
-            codec: 'avc1.4d002a', // Main profile, Level 4.2 (supports 1080p+)
-            width: width,
-            height: height,
-            bitrate: 2_000_000,
-            framerate: fps,
-            hardwareAcceleration: 'prefer-hardware'
-          });
-
           const canvas = document.createElement('canvas');
           canvas.width = width;
           canvas.height = height;
           const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
-          // Model is already initialized during preload
+          const processedBlobs = [];
 
+          // Phase 1: Process all frames with AI (Slow, takes minutes)
           for (let i = 0; i < totalFrames; i++) {
             const time = i / fps;
             
@@ -86,8 +63,43 @@ export async function processVideo(file, onProgress) {
             const processedBlob = await processImageRMBG(blobUrl);
             URL.revokeObjectURL(blobUrl);
             
+            processedBlobs.push(processedBlob);
+
+            onProgress(Math.round(((i + 1) / totalFrames) * 90)); // 0-90% progress
+            
+            // Yield to the event loop to prevent the browser from hanging
+            await new Promise(resolve => setTimeout(resolve, 20));
+          }
+
+          // Phase 2: Initialize Encoder and quickly encode all frames (Fast, milliseconds)
+          // This prevents the "Codec reclaimed due to inactivity" error because the encoder is not sitting idle during AI processing.
+          let muxer = new Muxer({
+            target: new ArrayBufferTarget(),
+            video: {
+              codec: 'avc',
+              width: width,
+              height: height
+            },
+            fastStart: 'in-memory'
+          });
+
+          let videoEncoder = new VideoEncoder({
+            output: (chunk, meta) => muxer.addVideoChunk(chunk, meta),
+            error: e => reject(e)
+          });
+
+          videoEncoder.configure({
+            codec: 'avc1.4d002a', // Main profile, Level 4.2
+            width: width,
+            height: height,
+            bitrate: 2_000_000,
+            framerate: fps,
+            hardwareAcceleration: 'prefer-hardware'
+          });
+
+          for (let i = 0; i < processedBlobs.length; i++) {
             const img = new Image();
-            img.src = URL.createObjectURL(processedBlob);
+            img.src = URL.createObjectURL(processedBlobs[i]);
             await new Promise(res => img.onload = res);
             
             // Draw a green screen background since MP4 doesn't support alpha channel well
@@ -100,10 +112,7 @@ export async function processVideo(file, onProgress) {
             videoEncoder.encode(frame, { keyFrame: i % fps === 0 });
             frame.close();
 
-            onProgress(Math.round(((i + 1) / totalFrames) * 100));
-            
-            // Yield to the event loop to prevent the browser from hanging/crashing
-            await new Promise(resolve => setTimeout(resolve, 20));
+            onProgress(90 + Math.round(((i + 1) / totalFrames) * 10)); // 90-100% progress
           }
 
           await videoEncoder.flush();
