@@ -1,4 +1,4 @@
-import { Muxer, ArrayBufferTarget } from 'mp4-muxer';
+import { Muxer, ArrayBufferTarget } from 'webm-muxer';
 import { processImageRMBG } from './rmbg';
 
 export async function processVideo(file, onProgress) {
@@ -27,7 +27,7 @@ export async function processVideo(file, onProgress) {
               width = Math.round(MAX_DIM * ratio);
             }
           }
-          // Ensure even dimensions for mp4 encoder
+          // Ensure even dimensions for encoder
           width = width - (width % 2);
           height = height - (height % 2);
 
@@ -72,13 +72,13 @@ export async function processVideo(file, onProgress) {
           }
 
           // Phase 2: Initialize Encoder and quickly encode all frames (Fast, milliseconds)
-          // This prevents the "Codec reclaimed due to inactivity" error because the encoder is not sitting idle during AI processing.
           let muxer = new Muxer({
             target: new ArrayBufferTarget(),
             video: {
-              codec: 'avc',
+              codec: 'V_VP8',
               width: width,
-              height: height
+              height: height,
+              alpha: true
             },
             fastStart: 'in-memory'
           });
@@ -89,11 +89,12 @@ export async function processVideo(file, onProgress) {
           });
 
           videoEncoder.configure({
-            codec: 'avc1.4d002a', // Main profile, Level 4.2
+            codec: 'vp8',
             width: width,
             height: height,
             bitrate: 2_000_000,
             framerate: fps,
+            alpha: 'keep',
             hardwareAcceleration: 'prefer-hardware'
           });
 
@@ -102,13 +103,12 @@ export async function processVideo(file, onProgress) {
             img.src = URL.createObjectURL(processedBlobs[i]);
             await new Promise(res => img.onload = res);
             
-            // Draw a green screen background since MP4 doesn't support alpha channel well
-            ctx.fillStyle = '#00ff00';
-            ctx.fillRect(0, 0, width, height);
+            // Clear canvas to transparent black
+            ctx.clearRect(0, 0, width, height);
             ctx.drawImage(img, 0, 0, width, height);
             URL.revokeObjectURL(img.src);
 
-            const frame = new VideoFrame(canvas, { timestamp: (i * 1000000) / fps });
+            const frame = new VideoFrame(canvas, { timestamp: (i * 1000000) / fps, alpha: 'keep' });
             videoEncoder.encode(frame, { keyFrame: i % fps === 0 });
             frame.close();
 
@@ -118,7 +118,7 @@ export async function processVideo(file, onProgress) {
           await videoEncoder.flush();
           muxer.finalize();
           const buffer = muxer.target.buffer;
-          const finalBlob = new Blob([buffer], { type: 'video/mp4' });
+          const finalBlob = new Blob([buffer], { type: 'video/webm' });
           resolve(URL.createObjectURL(finalBlob));
         } catch (err) {
           reject(err);

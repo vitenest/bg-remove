@@ -23,7 +23,8 @@
     "next": "^16.2.7",
     "pdfjs-dist": "^5.6.205",
     "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "react-dom": "^19.2.7",
+    "webm-muxer": "^5.1.4"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
